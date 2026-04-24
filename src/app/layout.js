@@ -1,5 +1,7 @@
 import { Inter, Inter_Tight } from "next/font/google";
 import "./globals.css";
+import TopNav from "@/components/TopNav";
+import TopLoader from "@/components/TopLoader";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -22,7 +24,11 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${inter.variable} ${interTight.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <TopLoader />
+        <TopNav />
+        {children}
+      </body>
     </html>
   );
 }

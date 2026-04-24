@@ -3,8 +3,23 @@
 :root {
     --background: #191f2b;
     --foreground: #0adba0;
+    --background-nav: #303a4f;
     --foreground-hover: #0cb585;
     --text: #fff;
+
+
+    /* MD_ROOT: */
+    --md-sys-color-primary: var(--foreground);
+    --md-sys-typescale-body-large-font: var(--font-inter);
+    --md-sys-typescale-label-large-font: var(--font-inter);
+    --md-sys-color-surface-container-highest: var(--text);
+    
+    /* MD_INPUT: */
+    --md-outlined-text-field-input-text-color: white;
+    --md-outlined-text-field-focus-input-text-color: white;
+    --md-outlined-text-field-label-text-color: rgba(255,255,255,0.7);
+    --md-outlined-text-field-focus-label-text-color: white;
+    --md-outlined-text-field-input-text-placeholder-color: rgba(255,255,255,0.5);
 }
 
 /* @theme inline {
