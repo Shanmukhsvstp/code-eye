@@ -15,4 +15,5 @@ AsyncSessionLocal = sessionmaker(
     expire_on_commit=False
 )
 
+
 Base = declarative_base()
