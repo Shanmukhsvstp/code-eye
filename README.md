@@ -1,8 +1,23 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Setup with npm and pip
+1) Make a fork and clone this repo on your local machine
+2) Run the following in your terminal
+```bash
+npm install
+```
+3) Don't worry about the severity vulnerabilities
+4) Redirect to backend
+5) Run the following in your terminal
+```bash
+cd backend
+pip install -r requirements.txt
+```
+
+
 ## Getting Started
 
-First, run the development server:
+First, run the nextjs development server:
 
 ```bash
 npm run dev
@@ -14,11 +29,19 @@ pnpm dev
 bun dev
 ```
 
+Then run the fastapi development server:
+-# In `backend` dir
+```
+python -m app.main
+```
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+
+
 
 ## Learn More
 
