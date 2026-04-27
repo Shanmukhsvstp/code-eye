@@ -3,8 +3,8 @@
 }
 
 .card {
-  width: 240px;
-  height: 360px;
+  width: 40vw;
+  height: 80vh;
   background: rgba(255, 255, 255, 0.09);
   backdrop-filter: blur(29px);
   -webkit-backdrop-filter: blur(29px);
