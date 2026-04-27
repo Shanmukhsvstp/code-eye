@@ -10,6 +10,7 @@ npm install
 4) Redirect to backend
 5) Run the following in your terminal
 ```bash
+cd backend
 pip install -r requirements.txt
 ```
 
@@ -29,12 +30,9 @@ bun dev
 ```
 
 Then run the fastapi development server:
-```bash
-fastapi dev main.py
+-# In `backend` dir
 ```
-or
-```bash
-python -m fastapi dev main.py
+python -m app.main
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
