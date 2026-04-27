@@ -3,6 +3,6 @@ from fastapi import APIRouter
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
-@router.get("/login")
-def login():
+@router.get("/")
+def authenticate():
     return {"message": "Login endpoint"}
