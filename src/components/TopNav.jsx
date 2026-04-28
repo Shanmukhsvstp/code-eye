@@ -14,6 +14,7 @@ export default function TopNav() {
 
     const router = useRouter();
     const [logoutHovered, setLogoutHovered] = useState(false);
+    const [user, setUser] = useState(null);
 
     const gotoHome = () => {
         router.push("/");
@@ -22,6 +23,10 @@ export default function TopNav() {
     useEffect(() => {
         document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
     }, []);
+
+    useEffect(() => {
+
+    }, [user]);
 
     return (
         <div className={styles.main}>
@@ -35,14 +40,29 @@ export default function TopNav() {
                     alt='CodeEye Logo' />
                 <p style={{ fontWeight: 700 }}>Code<span style={{ color: 'var(--foreground)' }}>Eye</span></p>
             </Link>
-            <Link
-                href="/auth/logout"
-                onMouseEnter={() => setLogoutHovered(true)}
-                onMouseLeave={() => setLogoutHovered(false)}
-                onClick={() => window.startLoader?.()}
-            >
-                {logoutHovered ? <FiLogOut style={{ color: 'var(--foreground)' }} /> : <LuLogOut />}
-            </Link>
+
+            {user ? (
+                <Link
+                    href="/auth/logout"
+                    onMouseEnter={() => setLogoutHovered(true)}
+                    onMouseLeave={() => setLogoutHovered(false)}
+                    onClick={() => window.startLoader?.()}
+                >
+                    {logoutHovered ? <FiLogOut style={{ color: 'var(--foreground)' }} /> : <LuLogOut />}
+                </Link>
+            )
+                :
+                (
+                    <Link
+                        href="/auth"
+                        // onMouseEnter={() => setLogoutHovered(true)}
+                        // onMouseLeave={() => setLogoutHovered(false)}
+                        onClick={() => { window.startLoader?.();}}
+                        >
+                            Login
+                        </Link>
+                )}
+
         </div>
     )
 }
