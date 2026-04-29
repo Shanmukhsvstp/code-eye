@@ -1,15 +1,27 @@
+"use client";
+import Link from 'next/link';
 import styles from './Auth.module.css';
 
+
 export default function Auth() {
+
+    const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+    // const auth_endpoint = `${BACKEND_URL}/api/auth/`;
+
+    const authenticate = () => {
+        window.location.href = `${BACKEND_URL}/api/auth/`;
+    };
+
+
     return (
         <div className={styles.main}>
             <div className={styles.card}>
                 <center>
                     <p className={styles.title}>Get Started</p>
-                    <p className={styles.tagline}>Start collaborating over <span className={styles.accent}>CodeEye</span> with a click.</p>
+                    <p className={styles.tagline}>Start collaborating over <span className={styles.accent}><Link href={'/'}>CodeEye</Link></span> with a click.</p>
                 </center>
                 <div className={styles.actionButton}>
-                    <button className="gsi-material-button">
+                    <button onClick={authenticate} className="gsi-material-button">
                         <div className="gsi-material-button-state"></div>
                         <div className="gsi-material-button-content-wrapper">
                             <div className="gsi-material-button-icon">

@@ -8,13 +8,18 @@ import styles from './TopNav.module.css'
 import Link from 'next/link';
 import { FiLogOut } from 'react-icons/fi';
 import { LuLogOut } from 'react-icons/lu';
+import { useAuth } from '@/context/AuthContext';
 
 
 export default function TopNav() {
 
     const router = useRouter();
     const [logoutHovered, setLogoutHovered] = useState(false);
-    const [user, setUser] = useState(null);
+    // const [user, setUser] = useState(null);
+
+    const { user, loading } = useAuth();
+
+
 
     const gotoHome = () => {
         router.push("/");
@@ -26,6 +31,7 @@ export default function TopNav() {
 
     useEffect(() => {
 
+        console.log(user);
     }, [user]);
 
     return (
@@ -57,10 +63,10 @@ export default function TopNav() {
                         href="/auth"
                         // onMouseEnter={() => setLogoutHovered(true)}
                         // onMouseLeave={() => setLogoutHovered(false)}
-                        onClick={() => { window.startLoader?.();}}
-                        >
-                            Login
-                        </Link>
+                        onClick={() => { window.startLoader?.(); }}
+                    >
+                        Login
+                    </Link>
                 )}
 
         </div>

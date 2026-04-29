@@ -5,7 +5,19 @@ from app.routes import auth
 from fastapi import APIRouter
 from starlette.middleware.sessions import SessionMiddleware
 import os
+from fastapi.middleware.cors import CORSMiddleware
+from app.db.database import init_db
+
 app = FastAPI()
+
+# CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Routers
 api_router = APIRouter(prefix="/api") # API Router
@@ -14,7 +26,7 @@ api_router = APIRouter(prefix="/api") # API Router
 api_router.include_router(auth.router)
 api_router.include_router(user.router)
 app.add_middleware(SessionMiddleware, 
-        secret_key=os.getenv("SECRET_KEY"),
+        secret_key=os.getenv("JWT_SECRET"),
         max_age=14 * 24 * 60 * 60, # cookie lives for 14 days
         same_site="lax",           # CSRF protection
         https_only=False           # Set true in production
@@ -23,6 +35,10 @@ app.add_middleware(SessionMiddleware,
 # Router Includes
 app.include_router(api_router)
 
+@app.on_event("startup")
+async def startup():
+    await init_db()
+
 
 if __name__ == "__main__":
-    uvicorn.run("app.main:app", host="127.0.0.1", port=8000, reload=True)
+    uvicorn.run("app.main:app", host="localhost", port=8000, reload=True)

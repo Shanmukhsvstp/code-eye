@@ -8,7 +8,7 @@ export default function Login() {
     const usernameRef = useRef();
     const passwordRef = useRef();
 
-    const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+    const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
     const login_endpoint = `${BACKEND_URL}/api/auth/login`;
 
     const login = async () => {

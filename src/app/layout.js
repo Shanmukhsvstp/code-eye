@@ -2,6 +2,7 @@ import { Inter, Inter_Tight } from "next/font/google";
 import "./globals.css";
 import TopNav from "@/components/TopNav";
 import TopLoader from "@/components/TopLoader";
+import { AuthProvider } from "@/context/AuthContext";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -26,8 +27,10 @@ export default function RootLayout({ children }) {
     >
       <body className="min-h-full flex flex-col">
         <TopLoader />
-        <TopNav />
-        {children}
+        <AuthProvider>
+          <TopNav />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

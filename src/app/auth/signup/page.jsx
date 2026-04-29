@@ -11,7 +11,7 @@ export default function Home() {
   const emailRef = useRef();
   const passwordRef = useRef();
 
-  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
   const signup_endpoint = `${BACKEND_URL}/api/auth/signup`;
 
   const signup = async () => {

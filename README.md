@@ -57,3 +57,69 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
+## Database Methods:
+Code Samples:
+### Insert
+```
+from app.models import User
+
+async def create_user(db):
+    user = User(
+        sub="123",
+        email="test@gmail.com",
+        name="Test",
+        display_name="Test User",
+        profile_picture=""
+    )
+
+    db.add(user)
+    await db.commit()
+    await db.refresh(user)  # get generated fields (like id)
+
+    return user
+```
+### Select
+```
+from sqlalchemy import select
+async def get_user(db, user_id):
+    result = await db.execute(
+        select(User).where(User.id == user_id)
+    )
+    return result.scalar_one_or_none()
+```
+### Update
+```
+async def update_user_name(db, user_id, new_name):
+    result = await db.execute(
+        select(User).where(User.id == user_id)
+    )
+    user = result.scalar_one_or_none()
+
+    if not user:
+        return None
+
+    user.name = new_name
+
+    await db.commit()
+    await db.refresh(user)
+
+    return user
+```
+### Delete
+```
+async def delete_user(db, user_id):
+    result = await db.execute(
+        select(User).where(User.id == user_id)
+    )
+    user = result.scalar_one_or_none()
+
+    if not user:
+        return False
+
+    await db.delete(user)
+    await db.commit()
+
+    return True
+```
