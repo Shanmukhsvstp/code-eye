@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import '@material/web/all.js';
 import { styles as typescaleStyles } from '@material/web/typography/md-typescale-styles.js';
 import Image from 'next/image';
@@ -46,6 +46,12 @@ export default function TopNav() {
                     alt='CodeEye Logo' />
                 <p style={{ fontWeight: 700 }}>Code<span style={{ color: 'var(--foreground)' }}>Eye</span></p>
             </Link>
+
+            <img
+                width={30}
+                height={30}
+                src={user ? user.profile_picture : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+                alt='Profile' />
 
             {user ? (
                 <Link

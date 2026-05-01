@@ -2,6 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 from app.routes import user
 from app.routes import auth
+from app.routes import rooms
 from fastapi import APIRouter
 from starlette.middleware.sessions import SessionMiddleware
 import os
@@ -25,9 +26,10 @@ api_router = APIRouter(prefix="/api") # API Router
 # API Endpoints
 api_router.include_router(auth.router)
 api_router.include_router(user.router)
+api_router.include_router(rooms.router)
 app.add_middleware(SessionMiddleware, 
         secret_key=os.getenv("JWT_SECRET"),
-        max_age=14 * 24 * 60 * 60, # cookie lives for 14 days
+        max_age=7 * 24 * 60 * 60, # cookie lives for 14 days
         same_site="lax",           # CSRF protection
         https_only=False           # Set true in production
 )

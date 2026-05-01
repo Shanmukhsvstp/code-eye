@@ -5,7 +5,7 @@ const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:800
 export const getUser = async () => {
   try {
     const res = await axios.get(
-      `${BACKEND_URL}/api/auth/me`,
+      `${BACKEND_URL}/api/user/current`,
       { withCredentials: true }
     );
     return res.data;

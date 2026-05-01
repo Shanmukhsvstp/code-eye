@@ -13,9 +13,19 @@ from sqlalchemy.orm import relationship
 from ..db.database import Base
 import time
 import threading
+import random
+import string
 
 
+ALPHABET = "abcdefghjkmnpqrstuvwxyz23456789"
 
+
+def generate_room_code(groups=(3, 4, 3)):
+    parts = []
+    for size in groups:
+        part = ''.join(random.choice(ALPHABET) for _ in range(size))
+        parts.append(part)
+    return '-'.join(parts)
 
 
 class Snowflake:
@@ -105,8 +115,10 @@ class Client(Base):
 # ROOMS
 class Room(Base):
     __tablename__ = "rooms"
+    
+    def_code = generate_room_code()
 
-    id = Column(BigInteger, primary_key=True)
+    id = Column(BigInteger, primary_key=True, default=def_code)
 
     created_by = Column(
         BigInteger,

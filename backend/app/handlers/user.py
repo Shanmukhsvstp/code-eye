@@ -1,4 +1,5 @@
 from app.models.models import User
+from app.utils.jwt import extractUserId
 from sqlalchemy import select
 
 async def userAlreadyExists(email, db):
@@ -6,6 +7,34 @@ async def userAlreadyExists(email, db):
         select(User).where(User.email == email)
     )
     return result.scalar_one_or_none()
+
+async def fetchUser(token, db):
+    
+    raw_user = extractUserId(token=token)
+    
+    user_id = raw_user["user_id"]
+    
+    result = await db.execute(
+        select(User).where(User.id == user_id)
+    )
+    
+    fetched_data = result.scalar_one_or_none()
+    
+    if fetched_data == None:
+        return None
+    
+    user = {
+        "id": user_id,
+        "email": fetched_data.email,
+        "display_name": fetched_data.display_name,
+        "name": fetched_data.name,
+        "profile_picture": fetched_data.profile_picture,
+        "joined_on": fetched_data.created_at,
+        "expires_at": raw_user["exp"]
+    }
+    
+    return user
+    
 
 async def createOrAuthenticateUser(user, db):
     sub = user["sub"]

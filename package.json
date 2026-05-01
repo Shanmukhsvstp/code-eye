@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@material/web": "^2.4.1",
+    "@monaco-editor/react": "^4.7.0",
     "@mui/material-nextjs": "^9.0.0",
     "axios": "^1.15.2",
     "next": "16.2.4",

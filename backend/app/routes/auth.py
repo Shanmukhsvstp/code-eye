@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from sqlalchemy.ext.asyncio import AsyncSession
 import os
 from app.handlers.user import createOrAuthenticateUser
+from app.utils.jwt import generateToken
 from app.db.database import get_db
 load_dotenv()
 
@@ -35,18 +36,16 @@ async def authenticate(request: Request):
 async def authCallBack(request: Request, db: AsyncSession = Depends(get_db)):
     token = await oauth.google.authorize_access_token(request) # Exchages the temp auth code
     user = token["userinfo"]
-    success, message, user_id = await createOrAuthenticateUser(user=user, db=db)
+    success, message, user = await createOrAuthenticateUser(user=user, db=db)
     if not success:
         return RedirectResponse(f"{frontend_url}/auth/error?msg={message}")
+    token = generateToken(user_id=user.id)
     # Get name and email
     request.session["user"] = {
-        "id": user_id,
+        "token": token,
     }
     return RedirectResponse(f"{frontend_url}/auth/success?msg={message}") # Go to Home Page
 
-@router.get("/me")
-async def get_user(request: Request):
-    return request.session.get("user")
 
 @router.get("/logout")
 async def logOut(request: Request):
