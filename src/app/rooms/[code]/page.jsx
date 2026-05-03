@@ -9,6 +9,7 @@ export default function RoomPage() {
     const { code } = useParams();
     const { user } = useAuth();
     const [link, setLink] = useState(`https://localhost:3000/rooms/${code}`);
+    
     const ws_url = process.env.NEXT_PUBLIC_BACKEND_URL + `/api/rooms/${code}`;
     const [role, setRole] = useState(null);
     const [clients, setClients] = useState({});

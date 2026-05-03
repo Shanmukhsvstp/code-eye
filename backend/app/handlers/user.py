@@ -54,7 +54,7 @@ async def createOrAuthenticateUser(user, db):
     
     
     result = await db.execute(
-        select(User).where(new_user.email == email)
+        select(User).where(User.email == email)
     )
     fetched_user = result.scalar_one_or_none()
     
@@ -64,8 +64,8 @@ async def createOrAuthenticateUser(user, db):
         db.add(new_user)
         await db.commit()
         await db.refresh(new_user)
-        if new_user != None:
-            return True, "Authentication successful!", new_user.id
+        if new_user is not None:
+            return True, "Authentication successful!", new_user
         else:
             return False, "Couldn't create your account, please try again later!", None
     else:

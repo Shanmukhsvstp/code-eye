@@ -64,14 +64,12 @@ class Snowflake:
 class User(Base):
     __tablename__ = "users"
 
-    snowflake = Snowflake(machine_id=1)
-
-    user_id = snowflake.generate()
+    _snowflake = Snowflake(machine_id=1)
 
     id = Column(
         BigInteger,
         primary_key=True,
-        default=user_id
+        default=lambda: User._snowflake.generate()
     )
 
     display_name = Column(Text, nullable=False)
