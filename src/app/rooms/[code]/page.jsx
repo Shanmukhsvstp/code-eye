@@ -1,6 +1,6 @@
 "use client";
 import { useParams } from "next/navigation";
-import React, { useEffect, useRef, useState } from "react";
+import React, { use, useEffect, useRef, useState } from "react";
 import "@material/web/textfield/filled-text-field";
 import { Editor } from "@monaco-editor/react";
 import { useAuth } from "@/context/AuthContext";
@@ -9,10 +9,9 @@ export default function RoomPage() {
     const { code } = useParams();
     const { user } = useAuth();
     const [link, setLink] = useState(`https://localhost:3000/rooms/${code}`);
-    const ws_url = process.env.NEXT_PUBLIC_BACKEND_URL + `/api/rooms/${code}/ws`;
+    const ws_url = process.env.NEXT_PUBLIC_BACKEND_URL + `/api/rooms/${code}`;
     const [role, setRole] = useState(null);
     const [clients, setClients] = useState({});
-
     const socketRef = useRef(null);
     const timeoutRef = useRef(null);
 
@@ -20,6 +19,7 @@ export default function RoomPage() {
         if (!code) return;
 
         const token = localStorage.getItem("token");
+        // const token = localStorage.getItem("token");
         const final_ws_url = ws_url + `?token=${token}`;
         const ws = new WebSocket(final_ws_url);
 
@@ -27,9 +27,13 @@ export default function RoomPage() {
 
         ws.onmessage = (event) => {
             const data = JSON.parse(event.data);
-
-            if (data.type === "init") {
-                setRole(data.role);
+            console.log(data)
+            if (data.type === "user_joined") {
+                console.log(data?.user_id);
+                console.log(user?.id);
+                if (data?.user_id == user?.id) {
+                    setRole(data.role);
+                }
             }
             if (data.type === "update") {
                 setClients((prev) => ({
@@ -41,7 +45,7 @@ export default function RoomPage() {
 
         return () => ws.close();
 
-    }, [code]);
+    }, [code, user]);
 
     const handleChange = (value) => {
         if (!socketRef.current || socketRef.current.readyState !== 1) return;
@@ -58,7 +62,7 @@ export default function RoomPage() {
         }, 300);
     }
 
-    if (!role) return <div>Connecting..</div>
+    if (!role) return <div>..</div>
 
     return (
         <div style={{ height: "100vh" }}>

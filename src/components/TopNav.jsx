@@ -17,7 +17,7 @@ export default function TopNav() {
     const [logoutHovered, setLogoutHovered] = useState(false);
     // const [user, setUser] = useState(null);
 
-    const { user, loading } = useAuth();
+    const { user, loading, token } = useAuth();
 
 
 
@@ -30,7 +30,6 @@ export default function TopNav() {
     }, []);
 
     useEffect(() => {
-
         console.log(user);
     }, [user]);
 

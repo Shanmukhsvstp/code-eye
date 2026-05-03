@@ -116,9 +116,9 @@ class Client(Base):
 class Room(Base):
     __tablename__ = "rooms"
     
-    def_code = generate_room_code()
+    # def_code = generate_room_code()
 
-    id = Column(BigInteger, primary_key=True, default=def_code)
+    id = Column(Text, primary_key=True, default=generate_room_code)
 
     created_by = Column(
         BigInteger,
@@ -147,7 +147,7 @@ class Connection(Base):
     )
 
     room_id = Column(
-        BigInteger,
+        Text,
         ForeignKey("rooms.id", ondelete="CASCADE"),
         nullable=False
     )

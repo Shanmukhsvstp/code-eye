@@ -3,6 +3,7 @@ import "./globals.css";
 import TopNav from "@/components/TopNav";
 import TopLoader from "@/components/TopLoader";
 import { AuthProvider } from "@/context/AuthContext";
+import { Suspense } from "react";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -28,8 +29,10 @@ export default function RootLayout({ children }) {
       <body className="min-h-full flex flex-col">
         <TopLoader />
         <AuthProvider>
-          <TopNav />
-          {children}
+          <Suspense>
+            <TopNav />
+            {children}
+          </Suspense>
         </AuthProvider>
       </body>
     </html>

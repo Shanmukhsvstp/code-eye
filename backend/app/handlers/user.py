@@ -30,7 +30,8 @@ async def fetchUser(token, db):
         "name": fetched_data.name,
         "profile_picture": fetched_data.profile_picture,
         "joined_on": fetched_data.created_at,
-        "expires_at": raw_user["exp"]
+        "expires_at": raw_user["exp"],
+        "token": token
     }
     
     return user

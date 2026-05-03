@@ -14,7 +14,7 @@ app = FastAPI()
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["http://localhost:3000", "http://192.168.1.38:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -30,8 +30,8 @@ api_router.include_router(rooms.router)
 app.add_middleware(SessionMiddleware, 
         secret_key=os.getenv("JWT_SECRET"),
         max_age=7 * 24 * 60 * 60, # cookie lives for 14 days
-        same_site="lax",           # CSRF protection
-        https_only=False           # Set true in production
+        same_site="none",           # CSRF protection
+        https_only=True           # Set true in production
 )
 
 # Router Includes

@@ -32,7 +32,9 @@ export const AuthProvider = ({ children }) => {
     };
 
     getUser().then((data) => {
+      console.log(`DATA: ${data}`);
       const authToken = data?.token;
+      localStorage.setItem("token", authToken);
       setToken(authToken);
       setLoading(false);
 
@@ -43,7 +45,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, setUser, loading }}>
+    <AuthContext.Provider value={{ user, setUser, loading, token, setLoading }}>
       {children}
     </AuthContext.Provider>
   );
