@@ -16,12 +16,11 @@ class Message:
         }
 
     @staticmethod
-    def code_update(user_id, line, content, stress_score=None):
+    def code_update(user_id, code, stress_score=None):
         msg = {
             "type": "code_update",
             "user_id": user_id,
-            "line": line,
-            "content": content
+            "code": code
         }
 
         if stress_score is not None:

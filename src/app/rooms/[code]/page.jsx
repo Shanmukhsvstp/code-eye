@@ -12,9 +12,7 @@ export default function RoomPage() {
 
     const ws_url = process.env.NEXT_PUBLIC_BACKEND_URL + `/api/rooms/${code}`;
     const [role, setRole] = useState(null);
-    const [clients, setClients] = useState([
-        { id: "1", code: "console.log('hi')", name: "Alice", stress_score: 0.9 }
-    ]);
+    const [clients, setClients] = useState([]);
     const [users, setUsers] = useState({})
 
     const socketRef = useRef(null);
@@ -50,6 +48,17 @@ export default function RoomPage() {
         ws.onmessage = (event) => {
             const data = JSON.parse(event.data);
             console.log(data)
+            if(data.type === "room_state") {
+                const clientsData = data.user.map(
+                    user => ({
+                        id: user.user_id,
+                        name: "User " + user.user_id,
+                        code: "",
+                        stress_score: 0
+                    })
+                );
+                setClients(clientsData);
+            }
             if (data.type === "user_joined") {
                 console.log(data?.user_id);
                 console.log(user?.id);
@@ -59,7 +68,7 @@ export default function RoomPage() {
                 if (data?.role == "client") {
                     addClient({
                         id: data?.user_id,
-                        code: [],
+                        code: "",
                         name: data?.display_name,
                         stress_score: 0
                     });
@@ -70,17 +79,19 @@ export default function RoomPage() {
                 //     ...prev,
                 //     [data.userId]: data.code
                 // }))
-                updateClient(data.user_id, (client) => {
-                    const new_code = [...client.code];
-                    while (new_code.length <= data.line) {
-                        new_code.push("");
-                    }
-                    new_code[data.line] = data.content;
-                    return {
-                        code: new_code,
-                        stress_score: data.stress_score ?? client.stress_score
-                    }
-                });
+                updateClient(data.user_id, (client) => ({
+                    code: data.code,
+                    stress_score: data.stress_score ?? client.stress_score
+                }));
+            }
+            if (data.type === "full_sync") {
+                const clientsData = Object.entries(data.code).map(([id, code])=> ({
+                    id,
+                    name: "User " + id,
+                    code,
+                    stress_score: 0
+                }));
+                setClients(clientsData);
             }
 
         };
@@ -134,7 +145,7 @@ export default function RoomPage() {
                             [...clients].sort((a, b) => b.stress_score - a.stress_score).map((client) => (
                                 <div key={client.id} style={{border: "1px solid #000", margin: 10}}>
                                     <p>{client.name} (ID: {client.id})</p>
-                                    <pre>{client.code.join("\n")}</pre>
+                                    <pre>{client.code}</pre>
                                 </div>
                             ))
                         }

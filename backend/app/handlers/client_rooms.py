@@ -32,7 +32,7 @@ async def join_room(room_id, user_id, websocket):
     await websocket.accept()
     room.clients[user_id] = websocket
 
-    room.code.setdefault(user_id, [])
+    room.code.setdefault(user_id, "")
     
     
     # await websocket.send_json(join_msg)
@@ -52,6 +52,11 @@ async def join_room(room_id, user_id, websocket):
 
     join_msg = message.user_joined(user_id=user_id, role=currRole)
     
+    await websocket.send_json({
+        "type": "full_sync",
+        "code": room.code
+    })
+    
     await broadcast(room=room, message=join_msg)
 
     return room
@@ -70,13 +75,14 @@ def leave_room(room_code, user_id):
         rooms.pop(room.room_id, None)
 
 
-async def update_code(room, user_id, line, content):
-    code = room.code.setdefault(user_id, [])
+async def update_code(room_id, user_id, code):
+    room = rooms[room_id]
+    # code = room.code.setdefault(user_id, [])
+    room.code[user_id] = code
+    # while len(code) <= line:
+    #     code.append("")
 
-    while len(code) <= line:
-        code.append("")
-
-    code[line] = content
+    # code[line] = content
 
 
 async def broadcast(room, message, target="all", target_user=None):
