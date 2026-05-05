@@ -36,8 +36,8 @@ export default function RoomPage() {
     };
 
     const removeClient = (user_id) => {
-        setClients(clients.filter((clients) => clients.user_id !== user_id));
-    }
+        setClients((prev) => prev.filter((client) => client.id !== user_id));
+    };
 
     useEffect(() => {
         if (!code) return;
@@ -52,7 +52,7 @@ export default function RoomPage() {
         ws.onmessage = (event) => {
             const data = JSON.parse(event.data);
             console.log(data)
-            if(data.type === "room_state") {
+            if (data.type === "room_state") {
                 const clientsData = data.user.map(
                     user => ({
                         id: user.user_id,
@@ -89,7 +89,7 @@ export default function RoomPage() {
                 }));
             }
             if (data.type === "full_sync") {
-                const clientsData = Object.entries(data.code).map(([id, code])=> ({
+                const clientsData = Object.entries(data.code).map(([id, code]) => ({
                     id,
                     name: "User " + id,
                     code,
@@ -148,14 +148,14 @@ export default function RoomPage() {
                     ))}
  */}
 
-                        {
-                            [...clients].sort((a, b) => b.stress_score - a.stress_score).map((client) => (
-                                <div key={client.id} style={{border: "1px solid #000", margin: 10}}>
-                                    <p>{client.name} (ID: {client.id})</p>
-                                    <pre>{client.code}</pre>
-                                </div>
-                            ))
-                        }
+                    {
+                        [...clients].sort((a, b) => b.stress_score - a.stress_score).map((client) => (
+                            <div key={client.id} style={{ border: "1px solid #000", margin: 10 }}>
+                                <p>{client.name} (ID: {client.id})</p>
+                                <pre>{client.code}</pre>
+                            </div>
+                        ))
+                    }
 
                     {/* {[...clients]  // clone to avoid mutating state
                         .sort((a, b) => b.stress_score - a.stress_score)
