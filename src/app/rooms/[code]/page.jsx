@@ -51,11 +51,12 @@ export default function RoomPage() {
 
         ws.onmessage = (event) => {
             const data = JSON.parse(event.data);
+            window.stopLoader?.();
             console.log(data)
             if (data.type === "room_state") {
                 const clientsData = data.user.map(
                     user => ({
-                        id: user.user_id,
+                        id: Number(user.user_id),
                         name: "User " + user.user_id,
                         code: "",
                         stress_score: 0
@@ -71,7 +72,7 @@ export default function RoomPage() {
                 }
                 if (data?.role == "client") {
                     addClient({
-                        id: data?.user_id,
+                        id: Number(data?.user_id),
                         code: "",
                         name: data?.display_name,
                         stress_score: 0
@@ -83,15 +84,15 @@ export default function RoomPage() {
                 //     ...prev,
                 //     [data.userId]: data.code
                 // }))
-                updateClient(data.user_id, (client) => ({
+                updateClient(Number(data.user_id), (client) => ({
                     code: data.code,
                     stress_score: data.stress_score ?? client.stress_score
                 }));
             }
             if (data.type === "full_sync") {
                 const clientsData = Object.entries(data.code).map(([id, code]) => ({
-                    id,
-                    name: data.profiles?.[id] || "User "+id,
+                    id: Number(id),
+                    name: data.profiles?.[id] || "User " + id,
                     code,
                     stress_score: 0
                 }));
@@ -124,7 +125,7 @@ export default function RoomPage() {
 
     if (!role) {
 
-        window.startLoader?.();        
+        window.startLoader?.();
         return <div>Loading</div>
 
     }
@@ -144,7 +145,7 @@ export default function RoomPage() {
 
             {role === "admin" && (
                 <div style={{ padding: 20 }}>
-                    <h2>Dashboard</h2>
+                    {/* <h2>Dashboard</h2> */}
                     {/* {Object.entries(clients).map(([id, code]) => (
                         <div key={id} style={{ border: "1px solid #ccc", margin: 10 }}>
                             <h4>Student {id}</h4>

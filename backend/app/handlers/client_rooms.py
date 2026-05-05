@@ -44,7 +44,8 @@ async def join_room(room_id, user_id, username, websocket):
         "users": [
             {
                 "user_id": each_user_id,
-                "role": "admin" if each_user_id in room.admins else "client"
+                "role": "admin" if each_user_id in room.admins else "client",
+                "display_name": room.profile.get(each_user_id, f"User {each_user_id}")
             }
             for each_user_id in room.clients.keys()
         ]

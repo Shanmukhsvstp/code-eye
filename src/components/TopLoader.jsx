@@ -11,6 +11,11 @@ export default function TopLoader() {
     window.startLoader = () => {
       setVisible(true);
     };
+    window.stopLoader = () => {
+      if (visible === true) {
+        setVisible(false);
+      }
+    }
   }, []);
 
   useEffect(() => {
@@ -32,7 +37,6 @@ export default function TopLoader() {
         left: 0,
         width: "100%",
         zIndex: 9999,
-
         opacity: visible ? 1 : 0,
         transition: "opacity 0.3s ease",
         pointerEvents: "none",
