@@ -12,9 +12,7 @@ export default function TopLoader() {
       setVisible(true);
     };
     window.stopLoader = () => {
-      if (visible === true) {
         setVisible(false);
-      }
     }
   }, []);
 
