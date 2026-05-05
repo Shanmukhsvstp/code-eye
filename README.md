@@ -1,3 +1,9 @@
+# Video Preview:
+
+https://github.com/user-attachments/assets/b38d2ffa-50fd-4832-9fc5-1d5d68846c62
+
+
+---
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Setup with npm and pip
@@ -144,3 +150,7 @@ GOOGLE_REDIRECT_URI="YOUR_GOOGLE_REDIRECT_URL"
 JWT_SECRET="YOUR_JWT_SECRET"
 FRONTEND_URL="https://codeeye.vercel.app"
 ```
+
+### Acknowledgements:
+- [ChatGPT](https://chat.openai.com/) was used in this project to assist with newer libraries, the whole codebase has been developed by human.
+
