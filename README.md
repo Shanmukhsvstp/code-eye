@@ -123,3 +123,24 @@ async def delete_user(db, user_id):
 
     return True
 ```
+
+
+Other ReadMe Files are in respective directories for better idea on the data structures used in here!
+
+# ENVs
+
+Frontend env path: `/`
+ENV:
+```env
+NEXT_PUBLIC_BACKEND_URL="your_python_backend_url"
+```
+Backend env path: `backend/`
+ENV:
+```env
+DATABASE_URL="POSTGRESS_DB_URL"
+GOOGLE_CLIENT_ID="YOUR_GOOGLE_CLIENT_ID"
+GOOGLE_CLIENT_SECRET="YOUR_GOOGLE_CLIENT_SECRET"
+GOOGLE_REDIRECT_URI="YOUR_GOOGLE_REDIRECT_URL"
+JWT_SECRET="YOUR_JWT_SECRET"
+FRONTEND_URL="https://codeeye.vercel.app"
+```

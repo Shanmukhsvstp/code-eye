@@ -90,7 +90,7 @@ def leave_room(room_code, user_id):
 
 async def update_code(room_id, user_id, code):
     room = rooms[room_id]
-    # code = room.code.setdefault(user_id, [])
+    
     room.code[user_id] = code
     # while len(code) <= line:
     #     code.append("")
