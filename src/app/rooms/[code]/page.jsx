@@ -10,7 +10,9 @@ import styles from "./rooms.module.css";
 export default function RoomPage() {
     const { code } = useParams();
     const { user } = useAuth();
-    const currUser = user;
+    
+    const [currUser, setCurrUser] = useState(user);
+    
     const [currCode, setCurrCode] = useState("");
     const currUrl = location?.href;
     const [link, setLink] = useState(currUrl);
@@ -21,6 +23,10 @@ export default function RoomPage() {
 
     const socketRef = useRef(null);
     const timeoutRef = useRef(null);
+
+    useEffect(()=>{
+        setCurrUser(user);
+    }, [user]);
 
     const addClient = (newClient) => {
         setClients((prev) => [...prev, newClient]);
