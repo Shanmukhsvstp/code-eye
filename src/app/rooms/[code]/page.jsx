@@ -91,7 +91,7 @@ export default function RoomPage() {
             if (data.type === "full_sync") {
                 const clientsData = Object.entries(data.code).map(([id, code]) => ({
                     id,
-                    name: "User " + id,
+                    name: data.profiles?.[id] || "User "+id,
                     code,
                     stress_score: 0
                 }));
@@ -119,10 +119,15 @@ export default function RoomPage() {
                     code: value || "",
                 })
             );
-        }, 300);
+        }, 50);
     }
 
-    if (!role) return <div>..</div>
+    if (!role) {
+
+        window.startLoader?.();        
+        return <div>Loading</div>
+
+    }
 
     return (
         <div style={{ height: "100vh" }}>
