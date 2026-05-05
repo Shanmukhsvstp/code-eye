@@ -54,10 +54,10 @@ export default function RoomPage() {
             window.stopLoader?.();
             console.log(data)
             if (data.type === "room_state") {
-                const clientsData = data.user.map(
+                const clientsData = data.users.map(
                     user => ({
                         id: Number(user.user_id),
-                        name: "User " + user.user_id,
+                        name: user.display_name,
                         code: "",
                         stress_score: 0
                     })
