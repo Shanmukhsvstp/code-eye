@@ -8,6 +8,7 @@ import { useAuth } from "@/context/AuthContext";
 export default function RoomPage() {
     const { code } = useParams();
     const { user } = useAuth();
+    const [currCode, setCurrCode] = useState("");
     const [link, setLink] = useState(`https://localhost:3000/rooms/${code}`);
 
     const ws_url = process.env.NEXT_PUBLIC_BACKEND_URL + `/api/rooms/${code}`;
@@ -101,6 +102,9 @@ export default function RoomPage() {
             if (data.type === "user_left") {
                 removeClient(data.user_id);
             }
+            if (data.type === "restore_code") {
+                setCurrCode(data.code);
+            }
 
         };
 
@@ -138,8 +142,8 @@ export default function RoomPage() {
                 <Editor
                     height="100%"
                     defaultLanguage="java"
-                    defaultValue="// Start Typing here"
                     onChange={handleChange}
+                    value={currCode}
                 />
             )}
 

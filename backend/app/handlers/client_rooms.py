@@ -64,8 +64,12 @@ async def join_room(room_id, user_id, username, websocket):
     #     "profile": room.profile
     # })
     
+    # If user was disconnected, send back his own code
+    existing_code = room.code.get(user_id, "")
+    restore_data = Message.restore_code(user_id=user_id, code=existing_code)
+    await websocket.send_json(restore_data)
     
-    await broadcast(room=room, message=join_msg)
+    await broadcast(room=room, message=join_msg, target_user=None)
 
     return room
 

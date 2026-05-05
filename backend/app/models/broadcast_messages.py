@@ -51,3 +51,11 @@ class Message:
             "type": "error",
             "message": message
         }
+        
+    @staticmethod
+    def restore_code(user_id, code):
+        return {
+            "type": "restore_code",
+            "user_id": user_id,
+            "code": code
+        }
