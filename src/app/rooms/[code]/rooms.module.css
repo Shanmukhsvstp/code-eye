@@ -1,0 +1,16 @@
+.previewDiv {
+    border: 1px var(--foreground) solid;
+    border-radius: 14px;
+    padding: 30px;
+    margin: 20px;
+}
+.codePreviewer {
+    margin-top: 20px;
+    font-family: monospace;
+}
+.codePreviewer span:nth-child(even) {
+    
+}
+.codePreviewer span:nth-child(odd) {
+    
+}
