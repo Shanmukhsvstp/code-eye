@@ -1,11 +1,12 @@
 class Message:
     
     @staticmethod
-    def user_joined(user_id, role):
+    def user_joined(user_id, username, role):
         return {
             "type": "user_joined",
             "user_id": user_id,
-            "role": role
+            "role": role,
+            "display_name": username
         }
 
     @staticmethod
@@ -29,12 +30,11 @@ class Message:
         return msg
 
     @staticmethod
-    def full_sync(code, users, admins):
+    def full_sync(code, profiles):
         return {
             "type": "full_sync",
             "code": code,
-            "users": users,
-            "admins": admins
+            "profiles": profiles
         }
 
     @staticmethod

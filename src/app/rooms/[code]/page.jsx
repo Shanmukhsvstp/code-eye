@@ -35,6 +35,10 @@ export default function RoomPage() {
         );
     };
 
+    const removeClient = (user_id) => {
+        setClients(clients.filter((clients) => clients.user_id !== user_id));
+    }
+
     useEffect(() => {
         if (!code) return;
 
@@ -92,6 +96,9 @@ export default function RoomPage() {
                     stress_score: 0
                 }));
                 setClients(clientsData);
+            }
+            if (data.type === "user_left") {
+                removeClient(data.user_id);
             }
 
         };

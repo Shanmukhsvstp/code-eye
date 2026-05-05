@@ -10,8 +10,9 @@ class Room:
         self.admins = set([owner_id])
         self.clients = {}
         self.code = {}
+        self.profile = {}
 
-async def join_room(room_id, user_id, websocket):
+async def join_room(room_id, user_id, username, websocket):
     currRole = "client"
     if room_id not in rooms:
         rooms[room_id] = Room(room_id, user_id)
@@ -31,6 +32,7 @@ async def join_room(room_id, user_id, websocket):
 
     await websocket.accept()
     room.clients[user_id] = websocket
+    room.profile[user_id] = username
 
     room.code.setdefault(user_id, "")
     
@@ -50,12 +52,17 @@ async def join_room(room_id, user_id, websocket):
     
     await websocket.send_json(initial_state)
 
-    join_msg = message.user_joined(user_id=user_id, role=currRole)
+    join_msg = message.user_joined(user_id=user_id, username=username, role=currRole)
     
-    await websocket.send_json({
-        "type": "full_sync",
-        "code": room.code
-    })
+    full_sync_data = message.full_sync(code=room.code, profiles=room.profile)
+    # Full Sync
+    await websocket.send_json(full_sync_data)
+    # await websocket.send_json({
+    #     "type": "full_sync",
+    #     "code": room.code,
+    #     "profile": room.profile
+    # })
+    
     
     await broadcast(room=room, message=join_msg)
 

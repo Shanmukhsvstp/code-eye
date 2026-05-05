@@ -49,7 +49,7 @@ async def websocket(
     
     user = await fetchUser(token=token, db=db)
     
-    room = await join_room(room_id=room_code, user_id=user["id"], websocket=websocket)
+    room = await join_room(room_id=room_code, user_id=user["id"], username=user["display_name"], websocket=websocket)
     
     try:
         while True:
