@@ -11,7 +11,8 @@ export default function RoomPage() {
     const { code } = useParams();
     const { user } = useAuth();
     
-    const [currUser, setCurrUser] = useState(user);
+    // const [currUser, setCurrUser] = useState(user);
+    const currUser = user;
     
     const [currCode, setCurrCode] = useState("");
     const currUrl = location?.href;
@@ -24,9 +25,9 @@ export default function RoomPage() {
     const socketRef = useRef(null);
     const timeoutRef = useRef(null);
 
-    useEffect(()=>{
-        setCurrUser(user);
-    }, [user]);
+    // useEffect(()=>{
+    //     setCurrUser(user);
+    // }, [user]);
 
     const addClient = (newClient) => {
         setClients((prev) => [...prev, newClient]);
