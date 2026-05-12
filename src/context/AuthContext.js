@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
 
   useEffect(() => {
-
+    window.startLoader?.();
     const loadUser = async (authToken) => {
       try {
         const user_profile = await axios.get(
@@ -40,6 +40,7 @@ export const AuthProvider = ({ children }) => {
 
       if (authToken) {
         loadUser(authToken);
+        window.stopLoader?.();
       }
     });
   }, []);

@@ -1,10 +1,18 @@
 "use client";
 import Link from 'next/link';
 import styles from './Auth.module.css';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
 
 
 export default function Auth() {
 
+    const { token, user, loading, setLoading } = useAuth();
+    const router = useRouter();
+    useEffect(()=>{
+        if (user !== null) router.push("/dashboard");
+    },[user]);
     const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
     // const auth_endpoint = `${BACKEND_URL}/api/auth/`;
 

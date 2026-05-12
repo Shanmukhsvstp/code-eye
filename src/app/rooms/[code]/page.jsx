@@ -1,5 +1,5 @@
 "use client";
-import { useParams } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import React, { use, useEffect, useRef, useState } from "react";
 import "@material/web/textfield/filled-text-field";
 import { Editor } from "@monaco-editor/react";
@@ -11,17 +11,30 @@ export default function RoomPage() {
     const { code } = useParams();
     const { user } = useAuth();
     const currUser = user;
+    const path = usePathname();
     const [currCode, setCurrCode] = useState("");
-    const currUrl = location?.href;
-    const [link, setLink] = useState(currUrl);
-
+    const [link, setLink] = useState("");
+    
     const ws_url = process.env.NEXT_PUBLIC_BACKEND_URL + `/api/rooms/${code}`;
     const [role, setRole] = useState(null);
     const [clients, setClients] = useState([]);
-
+    const router = useRouter();
     const socketRef = useRef(null);
     const timeoutRef = useRef(null);
 
+    useEffect(() => {
+        if (!role) {
+            window.startLoader?.();
+        } else {
+            window.stopLoader?.();
+        }
+        updateLink();
+    }, [role]);
+
+
+    const updateLink = () => {
+        setLink(`${location.href}`)
+    };
     const addClient = (newClient) => {
         setClients((prev) => [...prev, newClient]);
     };
@@ -151,7 +164,7 @@ export default function RoomPage() {
             {role === "client" && (
                 <Editor
                     height="100%"
-                    defaultLanguage="javascript"
+                    defaultLanguage="java"
                     onChange={handleChange}
                     theme="vs-dark"
                     value={currCode}
