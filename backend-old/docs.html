@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test API Routes Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding-left: 10px;
+            border-left: 4px solid #3498db;
+        }
+        h3 {
+            color: #7f8c8d;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .endpoint {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 6px;
+            border-left: 4px solid #3498db;
+        }
+        .method {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+        .get { background: #27ae60; color: white; }
+        .post { background: #2980b9; color: white; }
+        .patch { background: #e67e22; color: white; }
+        .delete { background: #e74c3c; color: white; }
+        .path {
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            color: #2c3e50;
+        }
+        pre {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        code {
+            font-family: 'Courier New', monospace;
+            background: #ecf0f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #e74c3c;
+        }
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        .error {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: #3498db;
+            color: white;
+            font-weight: 600;
+        }
+        tr:hover {
+            background: #f5f5f5;
+        }
+        .intro {
+            background: #e8f4f8;
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test API Routes Documentation</h1>
+        
+        <div class="intro">
+            <p><strong>Base URL:</strong> <code>http://localhost:PORT/api</code></p>
+            <p>These endpoints are designed for testing and development purposes. They help verify that your API is working correctly before implementing production features.</p>
+        </div>
+
+        <h2>📋 Quick Reference</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>Endpoint</th>
+                    <th>Purpose</th>
+                    <th>Auth Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/test-get</code></td>
+                    <td>Basic connectivity test</td>
+                    <td>❌ No</td>
+                </tr>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/test-params</code></td>
+                    <td>Query parameter validation</td>
+                    <td>❌ No</td>
+                </tr>
+                <tr>
+                    <td><span class="method get">GET</span></td>
+                    <td><code>/test-token</code></td>
+                    <td>Authorization header test</td>
+                    <td>✅ Yes</td>
+                </tr>
+                <tr>
+                    <td><span class="method post">POST</span></td>
+                    <td><code>/test-login</code></td>
+                    <td>Login flow simulation</td>
+                    <td>❌ No</td>
+                </tr>
+                <tr>
+                    <td><span class="method patch">PATCH</span></td>
+                    <td><code>/test-patch</code></td>
+                    <td>PATCH method test</td>
+                    <td>❌ No</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Test GET -->
+        <div class="endpoint">
+            <h2><span class="method get">GET</span> <span class="path">/api/test-get</span></h2>
+            
+            <h3>Description</h3>
+            <p>Simple endpoint to verify the API is running and responding correctly. Perfect for health checks.</p>
+            
+            <h3>Request</h3>
+            <p>No parameters required.</p>
+
+            <h3>Response</h3>
+            <div class="success">
+                <strong>Status:</strong> 200 OK
+            </div>
+            <pre>{
+  "message": "Test successful!"
+}</pre>
+
+            <h3>Example Usage</h3>
+            <p><strong>cURL:</strong></p>
+            <pre>curl http://localhost:3000/api/test-get</pre>
+
+            <p><strong>JavaScript (Fetch):</strong></p>
+            <pre>fetch('http://localhost:3000/api/test-get')
+  .then(response => response.json())
+  .then(data => console.log(data));</pre>
+
+            <p><strong>JavaScript (Axios):</strong></p>
+            <pre>axios.get('http://localhost:3000/api/test-get')
+  .then(response => console.log(response.data));</pre>
+        </div>
+
+        <!-- Test Params -->
+        <div class="endpoint">
+            <h2><span class="method get">GET</span> <span class="path">/api/test-params</span></h2>
+            
+            <h3>Description</h3>
+            <p>Tests query parameter handling and validation. Verifies your API correctly reads and validates URL parameters.</p>
+            
+            <h3>Query Parameters</h3>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Required</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>password</code></td>
+                    <td>string</td>
+                    <td>No</td>
+                    <td>12345678</td>
+                    <td>Must be "12345678" to pass validation</td>
+                </tr>
+            </table>
+
+            <h3>Successful Response</h3>
+            <div class="success">
+                <strong>Status:</strong> 200 OK
+            </div>
+            <pre>{
+  "message": "Test successful!"
+}</pre>
+
+            <h3>Error Response</h3>
+            <div class="error">
+                <strong>Status:</strong> 400 Bad Request
+            </div>
+            <pre>{
+  "error": "Invalid password"
+}</pre>
+
+            <h3>Example Usage</h3>
+            <p><strong>cURL (Success):</strong></p>
+            <pre>curl "http://localhost:3000/api/test-params?password=12345678"</pre>
+
+            <p><strong>cURL (Failure):</strong></p>
+            <pre>curl "http://localhost:3000/api/test-params?password=wrongpass"</pre>
+
+            <p><strong>JavaScript (Fetch):</strong></p>
+            <pre>const params = new URLSearchParams({ password: '12345678' });
+fetch(`http://localhost:3000/api/test-params?${params}`)
+  .then(response => response.json())
+  .then(data => console.log(data));</pre>
+
+            <p><strong>JavaScript (Axios):</strong></p>
+            <pre>axios.get('http://localhost:3000/api/test-params', {
+  params: { password: '12345678' }
+})
+  .then(response => console.log(response.data));</pre>
+
+            <div class="note">
+                <strong>💡 Note:</strong> If no password parameter is provided, it defaults to "12345678" and the request will succeed.
+            </div>
+        </div>
+
+        <!-- Test Token -->
+        <div class="endpoint">
+            <h2><span class="method get">GET</span> <span class="path">/api/test-token</span></h2>
+            
+            <h3>Description</h3>
+            <p>Validates that the Authorization header is present in the request. Useful for testing authentication middleware.</p>
+            
+            <h3>Headers</h3>
+            <table>
+                <tr>
+                    <th>Header</th>
+                    <th>Required</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>Authorization</code></td>
+                    <td>✅ Yes</td>
+                    <td>Any non-empty token value</td>
+                </tr>
+            </table>
+
+            <h3>Successful Response</h3>
+            <div class="success">
+                <strong>Status:</strong> 200 OK
+            </div>
+            <pre>{
+  "message": "Token is valid!"
+}</pre>
+
+            <h3>Error Response</h3>
+            <div class="error">
+                <strong>Status:</strong> 401 Unauthorized
+            </div>
+            <pre>{
+  "error": "Missing token"
+}</pre>
+
+            <h3>Example Usage</h3>
+            <p><strong>cURL (Success):</strong></p>
+            <pre>curl -H "Authorization: Bearer your-token-here" \
+  http://localhost:3000/api/test-token</pre>
+
+            <p><strong>cURL (Failure):</strong></p>
+            <pre>curl http://localhost:3000/api/test-token</pre>
+
+            <p><strong>JavaScript (Fetch):</strong></p>
+            <pre>fetch('http://localhost:3000/api/test-token', {
+  headers: {
+    'Authorization': 'Bearer your-token-here'
+  }
+})
+  .then(response => response.json())
+  .then(data => console.log(data));</pre>
+
+            <p><strong>JavaScript (Axios):</strong></p>
+            <pre>axios.get('http://localhost:3000/api/test-token', {
+  headers: {
+    'Authorization': 'Bearer your-token-here'
+  }
+})
+  .then(response => console.log(response.data));</pre>
+
+            <div class="note">
+                <strong>💡 Note:</strong> This endpoint only checks if the Authorization header exists, not if the token is actually valid.
+            </div>
+        </div>
+
+        <!-- Test Login -->
+        <div class="endpoint">
+            <h2><span class="method post">POST</span> <span class="path">/api/test-login</span></h2>
+            
+            <h3>Description</h3>
+            <p>Simulates a login flow with username and password validation. Returns a mock token on success.</p>
+            
+            <h3>Request Body</h3>
+            <table>
+                <tr>
+                    <th>Field</th>
+                    <th>Type</th>
+                    <th>Required</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>username</code></td>
+                    <td>string</td>
+                    <td>✅ Yes</td>
+                    <td>Must be "testuser"</td>
+                </tr>
+                <tr>
+                    <td><code>password</code></td>
+                    <td>string</td>
+                    <td>✅ Yes</td>
+                    <td>Must be "Testpassword@123*"</td>
+                </tr>
+            </table>
+
+            <h3>Successful Response</h3>
+            <div class="success">
+                <strong>Status:</strong> 200 OK
+            </div>
+            <pre>{
+  "message": "Login successful!",
+  "token": "test-token"
+}</pre>
+
+            <h3>Error Responses</h3>
+            <div class="error">
+                <strong>Status:</strong> 400 Bad Request (Invalid JSON)
+            </div>
+            <pre>{
+  "error": "invalid request"
+}</pre>
+
+            <div class="error">
+                <strong>Status:</strong> 401 Unauthorized (Wrong credentials)
+            </div>
+            <pre>{
+  "error": "Invalid credentials"
+}</pre>
+
+            <h3>Example Usage</h3>
+            <p><strong>cURL (Success):</strong></p>
+            <pre>curl -X POST http://localhost:3000/api/test-login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "testuser",
+    "password": "Testpassword@123*"
+  }'</pre>
+
+            <p><strong>cURL (Failure):</strong></p>
+            <pre>curl -X POST http://localhost:3000/api/test-login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "wronguser",
+    "password": "wrongpass"
+  }'</pre>
+
+            <p><strong>JavaScript (Fetch):</strong></p>
+            <pre>fetch('http://localhost:3000/api/test-login', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    username: 'testuser',
+    password: 'Testpassword@123*'
+  })
+})
+  .then(response => response.json())
+  .then(data => console.log(data));</pre>
+
+            <p><strong>JavaScript (Axios):</strong></p>
+            <pre>axios.post('http://localhost:3000/api/test-login', {
+  username: 'testuser',
+  password: 'Testpassword@123*'
+})
+  .then(response => console.log(response.data));</pre>
+
+            <div class="note">
+                <strong>🔐 Test Credentials:</strong><br>
+                <strong>Username:</strong> testuser<br>
+                <strong>Password:</strong> Testpassword@123*
+            </div>
+        </div>
+
+        <!-- Test Patch -->
+        <div class="endpoint">
+            <h2><span class="method patch">PATCH</span> <span class="path">/api/test-patch</span></h2>
+            
+            <h3>Description</h3>
+            <p>Simple endpoint to verify PATCH method support. Useful for testing partial update operations.</p>
+            
+            <h3>Request</h3>
+            <p>No parameters required.</p>
+
+            <h3>Response</h3>
+            <div class="success">
+                <strong>Status:</strong> 200 OK
+            </div>
+            <pre>{
+  "message": "PATCH request successful!"
+}</pre>
+
+            <h3>Example Usage</h3>
+            <p><strong>cURL:</strong></p>
+            <pre>curl -X PATCH http://localhost:3000/api/test-patch</pre>
+
+            <p><strong>JavaScript (Fetch):</strong></p>
+            <pre>fetch('http://localhost:3000/api/test-patch', {
+  method: 'PATCH'
+})
+  .then(response => response.json())
+  .then(data => console.log(data));</pre>
+
+            <p><strong>JavaScript (Axios):</strong></p>
+            <pre>axios.patch('http://localhost:3000/api/test-patch')
+  .then(response => console.log(response.data));</pre>
+        </div>
+
+        <h2>🚀 Testing Workflow</h2>
+        <div class="note">
+            <h3>Recommended Testing Order:</h3>
+            <ol>
+                <li><strong>GET /test-get</strong> - Verify basic connectivity</li>
+                <li><strong>GET /test-params</strong> - Test query parameter handling</li>
+                <li><strong>POST /test-login</strong> - Test request body parsing and validation</li>
+                <li><strong>GET /test-token</strong> - Test authorization headers</li>
+                <li><strong>PATCH /test-patch</strong> - Verify PATCH method support</li>
+            </ol>
+        </div>
+
+        <h2>⚠️ Important Notes</h2>
+        <ul>
+            <li>These endpoints are for <strong>testing and development only</strong></li>
+            <li>Remove or protect these routes in production environments</li>
+            <li>The test token returned is not a real JWT - it's just a mock value</li>
+            <li>Replace <code>localhost:3000</code> with your actual server address and port</li>
+        </ul>
+
+        <h2>🔧 Common Issues</h2>
+        <div class="error">
+            <h3>CORS Errors</h3>
+            <p>If testing from a browser and getting CORS errors, ensure your server has CORS middleware enabled:</p>
+            <pre>app.Use(cors.New(cors.Config{
+    AllowOrigins: "*",
+    AllowMethods: "GET,POST,PATCH,DELETE,PUT",
+    AllowHeaders: "Origin, Content-Type, Authorization",
+}))</pre>
+        </div>
+
+        <div class="error">
+            <h3>Connection Refused</h3>
+            <p>Make sure your Go server is running:</p>
+            <pre>go run main.go</pre>
+        </div>
+
+        <div class="error">
+            <h3>404 Not Found</h3>
+            <p>Verify you're using the correct base path. Check if your API uses a prefix like <code>/api</code>.</p>
+        </div>
+
+        <footer style="margin-top: 60px; padding-top: 20px; border-top: 2px solid #ecf0f1; text-align: center; color: #7f8c8d;">
+            <p>Generated Test API Documentation</p>
+        </footer>
+    </div>
+</body>
+</html>
