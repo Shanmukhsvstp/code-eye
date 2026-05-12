@@ -10,6 +10,8 @@ import styles from "./rooms.module.css";
 export default function RoomPage() {
     const { code } = useParams();
     const { user } = useAuth();
+    
+    // const [currUser, setCurrUser] = useState(user);
     const currUser = user;
     const path = usePathname();
     const [currCode, setCurrCode] = useState("");
