@@ -37,6 +37,8 @@
 
 .accent {
   color: var(--foreground);
+  margin-left: 4px;
+  margin-right: 4px;
 }
 
 .actionButton:hover button {
