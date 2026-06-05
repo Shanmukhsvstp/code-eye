@@ -2,39 +2,68 @@
   display: flex;
   justify-content: center; 
   align-items: center;
-  height: 90vh;
+  min-height: 90vh;
   font-family: var(--font-inter);
+  padding: 20px 0;
 }
 
 .title {
-  margin-top: 30px;
+  padding-top: 5%; 
   font-family: var(--font-inter-tight);
   font-weight: 700;
-  font-size: 2rem;
+  font-size: clamp(1.5rem, 4vw, 2.5rem); 
+  display: flex;
+  justify-content: center;
+  text-align: center; 
 }
 .tagline {
-  margin-top: 45px;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  padding: 0 5%; 
+  font-size: clamp(0.8rem, 2vw, 1.2rem); 
+  line-height: 1.5;
+}
+.actionButton {
+  display: flex;
+  justify-content: center; 
+  align-items: center;    
+  width: 100%;            
+  padding: 20px;           
+  box-sizing: border-box;
 }
 
-.actionButton{
-  position: absolute;
-  left: 50%;
-  top: 60%;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-}
 
 .accent {
   color: var(--foreground);
+  margin-left: 4px;
+  margin-right: 4px;
 }
 
-.actionButton:hover {
-  
+.actionButton:hover button {
+  opacity: 0.8;
+  transition: opacity 0.2s;
 }
+
+.actionButton button:active {
+  opacity: 0.6;
+  transform: scale(0.98);
+  transition: opacity 0.1s ease;
+}
+
 
 .card {
-  width: 40vw;
-  height: 50vh;
+  width: 95%; 
+  max-width: 550px;      
+  
+  min-height: 450px;     
+  height: auto;           
+  display: flex;
+  flex-direction: column;
+  justify-content:space-evenly;
+  padding: 40px 20px;     
+  box-sizing: border-box;
   background: rgba(255, 255, 255, 0.09);
   backdrop-filter: blur(29px);
   -webkit-backdrop-filter: blur(29px);

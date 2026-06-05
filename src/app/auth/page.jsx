@@ -24,10 +24,10 @@ export default function Auth() {
     return (
         <div className={styles.main}>
             <div className={styles.card}>
-                <center>
+                
                     <p className={styles.title}>Get Started</p>
-                    <p className={styles.tagline}>Start collaborating over <span className={styles.accent}><Link href={'/'}>CodeEye</Link></span> with a click.</p>
-                </center>
+                    <p className={styles.tagline}>Start collaborating over <Link className={styles.accent} href={'/'}>CodeEye</Link> with a click.</p>
+                
                 <div className={styles.actionButton}>
                     <button onClick={authenticate} className="gsi-material-button">
                         <div className="gsi-material-button-state"></div>
