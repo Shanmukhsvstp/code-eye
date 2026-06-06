@@ -4,16 +4,18 @@ import styles from './dashboard.module.css';
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import languages from '@/context/languages.json';
 
 export default function Home() {
 
     const { token, user, loading, setLoading } = useAuth();
     // const roomCode = useRef("");
     const [roomCode, setRoomCode] = useState("");
+    const [selectedLang,setSelectedLang] = useState("python");
     const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
     const creation_endpoint = `${BACKEND_URL}/api/rooms/create`;
     const router = useRouter();
-
+    const supportedLang = languages.lang;
     const createRoom = async () => {
         if (roomCode !== "") {
             router.push(`/rooms/${roomCode}`)
@@ -47,6 +49,25 @@ export default function Home() {
                         <p className={styles.showcaseText}>
                             A unified platform to understand and explain programming in a better way for universities.
                         </p>
+                    </div>
+                    <div style={{
+                        marginTop: '20px'
+                    }}>
+                        <h1 style={{
+                            fontSize: '120%',
+                        }}>Choose a language</h1>
+                        <select 
+                            defaultValue={selectedLang} 
+                            onChange={(e) => setSelectedLang(e.target.value)}
+                            style={{ 
+                                background: '#191F2B',
+                                fontSize: '110%',
+                            }}
+                        >
+                            {supportedLang.map((e, i) => (
+                                <option key={i} value={e}>{e}</option>
+                            ))}
+                        </select>
                     </div>
                     <div style={{ margin: 30 }}>
                         <md-outlined-text-field
@@ -86,7 +107,7 @@ export default function Home() {
                         </md-filled-button>
                     </div>
                 </div>
-            </center>
-        </div>
+            </center >
+        </div >
     );
 }
