@@ -12,6 +12,7 @@ export default function RoomPage() {
     const { user } = useAuth();
     
     // const [currUser, setCurrUser] = useState(user);
+    const choosenLang = useRef('python');
     const currUser = user;
     const path = usePathname();
     const [currCode, setCurrCode] = useState("");
@@ -166,7 +167,7 @@ export default function RoomPage() {
             {role === "client" && (
                 <Editor
                     height="100%"
-                    defaultLanguage="java"
+                    defaultLanguage={choosenLang ?? "java"}
                     onChange={handleChange}
                     theme="vs-dark"
                     value={currCode}
@@ -204,7 +205,7 @@ export default function RoomPage() {
                                 <Editor
                                     className={styles.codePreviewer}
                                     height="40vh"
-                                    defaultLanguage="java"
+                                    defaultLanguage={choosenLang ?? "java"}
                                     theme="vs-dark"
                                     options={{
                                         readOnly: true,
