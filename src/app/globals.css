@@ -20,12 +20,44 @@
     --md-outlined-text-field-label-text-color: rgba(255,255,255,0.7);
     --md-outlined-text-field-focus-label-text-color: white;
     --md-outlined-text-field-input-text-placeholder-color: rgba(255,255,255,0.5);
+
+
+    /* MD_SELECT: */
+--md-outlined-select-text-field-container-color: var(--background);
+--md-outlined-select-text-field-input-text-color: var(--text);
+--md-outlined-select-text-field-label-text-color: rgba(255, 255, 255, 0.7);
+--md-outlined-select-text-field-outline-color: #3A4353;
+--md-outlined-select-text-field-trailing-icon-color: var(--text);
+
+--md-outlined-select-text-field-hover-input-text-color: var(--text);
+--md-outlined-select-text-field-hover-label-text-color: var(--text);
+--md-outlined-select-text-field-hover-outline-color: var(--foreground);
+--md-outlined-select-text-field-hover-trailing-icon-color: var(--text);
+
+--md-outlined-select-text-field-focus-input-text-color: var(--text);
+--md-outlined-select-text-field-focus-label-text-color: var(--foreground);
+--md-outlined-select-text-field-focus-outline-color: var(--foreground);
+--md-outlined-select-text-field-focus-trailing-icon-color: var(--foreground);
+
+/* dropdown items — md-menu-item tokens. These inherit into the
+   slotted md-select-option elements even across the shadow-DOM
+   boundary, so setting them on :root is enough. */
+--md-menu-item-label-text-color: var(--text);
+--md-menu-item-hover-label-text-color: var(--text);
+--md-menu-item-hover-state-layer-color: var(--foreground);
+--md-menu-item-hover-state-layer-opacity: 0.12;
+--md-menu-item-selected-label-text-color: var(--background);
+--md-menu-item-selected-container-color: var(--foreground);
 }
 
 /* @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 } */
+
+md-outlined-select::part(menu) {
+    --md-menu-container-color: var(--background-nav);
+}
 
 body {
   background: var(--background);
