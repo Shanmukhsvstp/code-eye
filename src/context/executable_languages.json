@@ -1,0 +1,31 @@
+{
+    "executable_languages": [
+        "c",
+        "cpp",
+        "csharp",
+        "java",
+        "javascript",
+        "typescript",
+        "python",
+        "php",
+        "shell",
+        "go",
+        "rust",
+        "kotlin",
+        "swift",
+        "ruby",
+        "dart",
+        "r",
+        "objective-c",
+        "scala",
+        "perl",
+        "lua",
+        "powershell",
+        "vb",
+        "pascal",
+        "julia",
+        "elixir",
+        "fsharp",
+        "clojure"
+    ]
+}

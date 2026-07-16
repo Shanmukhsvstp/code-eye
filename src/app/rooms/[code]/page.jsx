@@ -6,19 +6,24 @@ import "@material/web/textfield/filled-text-field";
 import { Editor } from "@monaco-editor/react";
 import { useAuth } from "@/context/AuthContext";
 import styles from "./rooms.module.css";
-
+import { FaPlay } from "react-icons/fa";
+import languages from "@/context/executable_languages.json"
 
 export default function RoomPage() {
     const { code } = useParams();
     const { user } = useAuth();
-    
+
+    const executable_languages = languages.executable_languages;
+
+    const [codeExecutable, setCodeExecutable] = useState(false);
+
     // const [currUser, setCurrUser] = useState(user);
     const [choosenLang, setChoosenLang] = useState("python");
     const currUser = user;
     // const path = usePathname();
     const [currCode, setCurrCode] = useState("");
     const [link, setLink] = useState("");
-    
+
     const ws_url = process.env.NEXT_PUBLIC_BACKEND_URL + `/api/rooms/${code}`;
     const [role, setRole] = useState(null);
     const [clients, setClients] = useState([]);
@@ -56,6 +61,10 @@ export default function RoomPage() {
         );
     };
 
+    const runCode = () => {
+
+    }
+
     const removeClient = (user_id) => {
         setClients((prev) => prev.filter((client) => client.id !== user_id));
     };
@@ -84,8 +93,11 @@ export default function RoomPage() {
             window.stopLoader?.();
             console.log(data)
             if (data.type === "room_state") {
-                console.log(data.default_lang);
+                // console.log(data.default_lang);
                 setChoosenLang(data.default_lang);
+                if (executable_languages.includes(choosenLang)) {
+                    setCodeExecutable(true);
+                }
                 const clientsData = data.users
                     .filter(user => Number(user.user_id) !== Number(currUser?.id))
                     .map(
@@ -168,13 +180,19 @@ export default function RoomPage() {
     return (
         <div style={{ height: "100vh" }}>
             {role === "client" && (
-                <Editor
-                    height="100%"
-                    defaultLanguage={choosenLang ?? "java"}
-                    onChange={handleChange}
-                    theme="vs-dark"
-                    value={currCode}
-                />
+                <div>
+                    {
+                        codeExecutable && <FaPlay className="runBtn" onClick={runCode} />
+                    }
+                    
+                    <Editor
+                        height="100%"
+                        defaultLanguage={choosenLang ?? "java"}
+                        onChange={handleChange}
+                        theme="vs-dark"
+                        value={currCode}
+                    />
+                </div>
             )}
 
             {role === "admin" && (

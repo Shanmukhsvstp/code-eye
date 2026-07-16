@@ -2,6 +2,36 @@ from app.models.models import User, Room
 from app.utils.jwt import extractUserId
 from sqlalchemy import select
 
+
+JUDGE0_LANGUAGE_IDS = {
+    "c": 50,
+    "cpp": 54,
+    "csharp": 51,
+    "java": 62,
+    "javascript": 63,
+    "typescript": 74,
+    "python": 71,
+    "php": 68,
+    "shell": 46,
+    "go": 60,
+    "rust": 73,
+    "kotlin": 78,
+    "swift": 83,
+    "ruby": 72,
+    "r": 80,
+    "objective-c": 79,
+    "scala": 81,
+    "perl": 85,
+    "lua": 64,
+    "vb": 84,
+    "pascal": 67,
+    "elixir": 57,
+    "fsharp": 87,
+    "clojure": 86,
+    "sql": 82,
+}
+
+
 async def userAlreadyExists(email, db):
     result = await db.execute(
         select(User).where(User.email == email)
@@ -94,5 +124,6 @@ async def createOrAuthenticateUser(user, db):
         
     
     # print(user)
-    
-    
+
+def fetchLanguageCode(language):
+    return JUDGE0_LANGUAGE_IDS[language]
