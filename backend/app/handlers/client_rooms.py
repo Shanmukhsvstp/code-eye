@@ -1,22 +1,30 @@
 from app.models.broadcast_messages import Message
+from app.handlers.user import fetchRoom
 
 rooms = {}
 message = Message
 
 class Room:
-    def __init__(self, room_id, owner_id):
+    def __init__(self, room_id, owner_id, lang):
         self.room_id = room_id
+        self.default_lang = lang
         self.owner = owner_id
         self.admins = set([owner_id])
         self.clients = {}
         self.code = {}
         self.profile = {}
 
-async def join_room(room_id, user_id, username, websocket):
+async def join_room(room_id, user_id, username, websocket, db):
     currRole = "client"
     if room_id not in rooms:
-        rooms[room_id] = Room(room_id, user_id)
+        fetched_data = await fetchRoom(room_id=room_id, db=db)
+        lang = fetched_data["default_lang"]
+        if lang is None:
+            lang = "python"
+            
+        rooms[room_id] = Room(room_id, user_id, lang)
         currRole = "admin"
+            
         
     room = rooms[room_id]
     
@@ -41,6 +49,7 @@ async def join_room(room_id, user_id, username, websocket):
     
     initial_state = {
         "type": "room_state",
+        "default_lang": room.default_lang,
         "users": [
             {
                 "user_id": each_user_id,
@@ -53,7 +62,7 @@ async def join_room(room_id, user_id, username, websocket):
     
     await websocket.send_json(initial_state)
 
-    join_msg = message.user_joined(user_id=user_id, username=username, role=currRole)
+    join_msg = message.user_joined(user_id=user_id, username=username, role=currRole, default_lang=room.default_lang)
     
     full_sync_data = message.full_sync(code=room.code, profiles=room.profile)
     # Full Sync

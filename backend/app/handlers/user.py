@@ -1,4 +1,4 @@
-from app.models.models import User
+from app.models.models import User, Room
 from app.utils.jwt import extractUserId
 from sqlalchemy import select
 
@@ -36,6 +36,22 @@ async def fetchUser(token, db):
     
     return user
     
+async def fetchRoom(room_id, db):
+    result = await db.execute(
+        select(Room).where(Room.id == room_id)
+    )
+    
+    fetched_data = result.scalar_one_or_none()
+     
+    print(fetched_data)
+       
+    if fetched_data == None:
+        return None
+        
+    room = {
+        "default_lang": fetched_data.default_lang
+    }
+    return room
 
 async def createOrAuthenticateUser(user, db):
     sub = user["sub"]

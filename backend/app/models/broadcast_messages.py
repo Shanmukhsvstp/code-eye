@@ -1,12 +1,13 @@
 class Message:
     
     @staticmethod
-    def user_joined(user_id, username, role):
+    def user_joined(user_id, username, role, default_lang):
         return {
             "type": "user_joined",
             "user_id": user_id,
             "role": role,
-            "display_name": username
+            "display_name": username,
+            "default_lang": default_lang,
         }
 
     @staticmethod

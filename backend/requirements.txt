@@ -9,3 +9,4 @@ authlib==1.7.0
 websockets==15.0.1
 python-multipart==0.0.20
 PyJWT
+httpx

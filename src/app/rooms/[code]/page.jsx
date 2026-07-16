@@ -1,4 +1,5 @@
 "use client";
+
 import { useParams, usePathname, useRouter } from "next/navigation";
 import React, { use, useEffect, useRef, useState } from "react";
 import "@material/web/textfield/filled-text-field";
@@ -12,16 +13,16 @@ export default function RoomPage() {
     const { user } = useAuth();
     
     // const [currUser, setCurrUser] = useState(user);
-    const choosenLang = useRef('python');
+    const [choosenLang, setChoosenLang] = useState("python");
     const currUser = user;
-    const path = usePathname();
+    // const path = usePathname();
     const [currCode, setCurrCode] = useState("");
     const [link, setLink] = useState("");
     
     const ws_url = process.env.NEXT_PUBLIC_BACKEND_URL + `/api/rooms/${code}`;
     const [role, setRole] = useState(null);
     const [clients, setClients] = useState([]);
-    const router = useRouter();
+    // const router = useRouter();
     const socketRef = useRef(null);
     const timeoutRef = useRef(null);
 
@@ -83,6 +84,8 @@ export default function RoomPage() {
             window.stopLoader?.();
             console.log(data)
             if (data.type === "room_state") {
+                console.log(data.default_lang);
+                setChoosenLang(data.default_lang);
                 const clientsData = data.users
                     .filter(user => Number(user.user_id) !== Number(currUser?.id))
                     .map(

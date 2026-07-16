@@ -17,15 +17,18 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="")
 
 @router.get("/create")
 async def createRoom(
+    lang: str,
     db: AsyncSession = Depends(get_db), 
     token: str = Depends(oauth2_scheme)
 ):    
+    
     user = await fetchUser(token=token, db=db)
     
     if user is None:
         raise HTTPException(status_code=401, detail="Unauthorized")
     
     room = Room(
+        default_lang = lang,
         created_by = user["id"]
     )
     db.add(room)
@@ -49,7 +52,7 @@ async def websocket(
     
     user = await fetchUser(token=token, db=db)
     
-    room = await join_room(room_id=room_code, user_id=user["id"], username=user["display_name"], websocket=websocket)
+    room = await join_room(room_id=room_code, user_id=user["id"], username=user["display_name"], websocket=websocket, db=db)
     
     try:
         while True:

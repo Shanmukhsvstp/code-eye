@@ -117,6 +117,12 @@ class Room(Base):
     # def_code = generate_room_code()
 
     id = Column(Text, primary_key=True, default=generate_room_code)
+    
+    default_lang = Column(
+        Text,
+        server_default="python",
+        nullable=False
+    )
 
     created_by = Column(
         BigInteger,

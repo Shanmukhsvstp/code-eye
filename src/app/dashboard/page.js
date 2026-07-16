@@ -28,6 +28,9 @@ export default function Home() {
                 {
                     headers: {
                         "Authorization": `Bearer ${token}`
+                    },
+                    params: {
+                        "lang": selectedLang
                     }
                 }
             );
@@ -92,6 +95,8 @@ export default function Home() {
                         ref={selectRef}
                         value={selectedLang}
                         style={{ width: '100%' }}
+                        md-menu-item=""
+                        tabindex="0"
                     >
                         {supportedLang.map((lang, i) => (
                             <md-select-option key={i} value={lang} selected={lang === selectedLang}>
