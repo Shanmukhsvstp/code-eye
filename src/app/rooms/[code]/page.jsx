@@ -25,6 +25,8 @@ export default function RoomPage() {
     const [link, setLink] = useState("");
 
     const ws_url = process.env.NEXT_PUBLIC_BACKEND_URL + `/api/rooms/${code}`;
+    
+
     const [role, setRole] = useState(null);
     const [clients, setClients] = useState([]);
     // const router = useRouter();
@@ -180,11 +182,14 @@ export default function RoomPage() {
     return (
         <div style={{ height: "100vh" }}>
             {role === "client" && (
-                <div>
-                    {
-                        codeExecutable && <FaPlay className="runBtn" onClick={runCode} />
-                    }
-                    
+                <div className={styles.editorContainer}>
+                    {codeExecutable && (
+                        <button className={styles.runBtn} onClick={runCode}>
+                            <FaPlay />
+                            <span>Run</span>
+                        </button>
+                    )}
+
                     <Editor
                         height="100%"
                         defaultLanguage={choosenLang ?? "java"}
