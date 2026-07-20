@@ -49,7 +49,7 @@
 
 .terminalContainer {
     height: 100%;
-    background: var(--background);
+    /* background: var(--background); */
     border-top: 1px solid var(--foreground);
     overflow: hidden;
 }

@@ -74,9 +74,9 @@ export default function RoomPage() {
 
     const runCode = () => {
         window.startLoader?.();
+        if (executing) return;
         setExecuting(true);
 
-        if (executing) return;
         if (currCode == "") return;
         if (!socketRef.current || socketRef.current.readyState !== 1) return;
 
@@ -252,12 +252,11 @@ export default function RoomPage() {
 
                     <ResizableHandle />
 
-                    <ResizablePanel defaultSize={25} minSize={15}>
+                    <ResizablePanel defaultSize={100}>
                         <div className={styles.terminalContainer}>
-                            <Terminal />
+                            <Terminal data={"TEST OUTPUT"} />
                         </div>
                     </ResizablePanel>
-
                 </ResizablePanelGroup>
             )}
 
