@@ -8,6 +8,13 @@ import { useAuth } from "@/context/AuthContext";
 import styles from "./rooms.module.css";
 import { FaPlay } from "react-icons/fa";
 import languages from "@/context/executable_languages.json"
+import Terminal from "@/components/Terminal/Terminal";
+import {
+    ResizableHandle,
+    ResizablePanel,
+    ResizablePanelGroup,
+} from "@/components/ui/resizable"
+
 
 export default function RoomPage() {
     const { code } = useParams();
@@ -16,6 +23,7 @@ export default function RoomPage() {
     const executable_languages = languages.executable_languages;
 
     const [codeExecutable, setCodeExecutable] = useState(false);
+    const [executing, setExecuting] = useState(false);
 
     // const [currUser, setCurrUser] = useState(user);
     const [choosenLang, setChoosenLang] = useState("python");
@@ -25,13 +33,14 @@ export default function RoomPage() {
     const [link, setLink] = useState("");
 
     const ws_url = process.env.NEXT_PUBLIC_BACKEND_URL + `/api/rooms/${code}`;
-    
+
 
     const [role, setRole] = useState(null);
     const [clients, setClients] = useState([]);
     // const router = useRouter();
     const socketRef = useRef(null);
     const timeoutRef = useRef(null);
+    const executeTimeoutRef = useRef(null);
 
     useEffect(() => {
         if (!role) {
@@ -64,7 +73,24 @@ export default function RoomPage() {
     };
 
     const runCode = () => {
+        window.startLoader?.();
+        setExecuting(true);
 
+        if (executing) return;
+        if (currCode == "") return;
+        if (!socketRef.current || socketRef.current.readyState !== 1) return;
+
+        clearTimeout(executeTimeoutRef.current);
+
+        timeoutRef.current = setTimeout(() => {
+            socketRef.current.send(
+                JSON.stringify({
+                    type: "code_execution",
+                    code: currCode || "",
+                    default_lang: choosenLang
+                })
+            );
+        }, 10000);
     }
 
     const removeClient = (user_id) => {
@@ -150,6 +176,11 @@ export default function RoomPage() {
             if (data.type === "restore_code") {
                 setCurrCode(data.code);
             }
+            if (data.type === "code_execution") {
+                setExecuting(false);
+                window.stopLoader?.();
+                console.log(data);
+            }
 
         };
 
@@ -182,22 +213,52 @@ export default function RoomPage() {
     return (
         <div style={{ height: "100vh" }}>
             {role === "client" && (
-                <div className={styles.editorContainer}>
-                    {codeExecutable && (
-                        <button className={styles.runBtn} onClick={runCode}>
-                            <FaPlay />
-                            <span>Run</span>
-                        </button>
-                    )}
+                <ResizablePanelGroup orientation="vertical" className={styles.editorContainer}>
 
-                    <Editor
-                        height="100%"
-                        defaultLanguage={choosenLang ?? "java"}
-                        onChange={handleChange}
-                        theme="vs-dark"
-                        value={currCode}
-                    />
-                </div>
+                    <ResizablePanel defaultSize={75} minSize={35}>
+                        <div className={styles.editorWrapper}>
+
+                            <div className={styles.toolbar}>
+                                {codeExecutable && (
+                                    <button
+                                        className={styles.runBtn}
+                                        disabled={executing}
+                                        onClick={runCode}
+                                    >
+                                        <FaPlay />
+                                        Run
+                                    </button>
+                                )}
+                            </div>
+
+                            <div className={styles.editor}>
+                                <Editor
+                                    height="100%"
+                                    language={choosenLang}
+                                    value={currCode}
+                                    onChange={handleChange}
+                                    theme="vs-dark"
+                                    options={{
+                                        automaticLayout: true,
+                                        minimap: { enabled: true },
+                                        fontSize: 14,
+                                        scrollBeyondLastLine: false,
+                                    }}
+                                />
+                            </div>
+
+                        </div>
+                    </ResizablePanel>
+
+                    <ResizableHandle />
+
+                    <ResizablePanel defaultSize={25} minSize={15}>
+                        <div className={styles.terminalContainer}>
+                            <Terminal />
+                        </div>
+                    </ResizablePanel>
+
+                </ResizablePanelGroup>
             )}
 
             {role === "admin" && (

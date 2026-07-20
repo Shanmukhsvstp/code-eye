@@ -60,3 +60,11 @@ class Message:
             "user_id": user_id,
             "code": code
         }
+        
+    @staticmethod
+    def code_execution(result):
+        return {
+            "type": "code_execution",
+            **result
+        }
+        

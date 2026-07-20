@@ -9,6 +9,7 @@ from app.utils.jwt import extractUserId
 from fastapi import HTTPException
 from app.models.broadcast_messages import Message
 from app.models.models import Room
+from app.handlers.execute import executeCode
 
 
 router = APIRouter(prefix="/rooms", tags=["rooms"])
@@ -58,6 +59,7 @@ async def websocket(
         while True:
             data = await websocket.receive_json()
             message_type = data.get("type")
+            
             if message_type == "code_change":
                 content = data.get("code")
                 if (room.code.get(user["id"]) == content):
@@ -69,6 +71,20 @@ async def websocket(
                     stress_score=0.00
                 )
                 await broadcast(room=room, message=msg, target="admins")
+                
+            elif message_type == "code_execution":
+                code = data.get("code")
+                lang = data.get("default_lang")
+                inputs = data.get("inputs", [])
+                
+                stdin = "\n".join(inputs)
+                        
+                res = await executeCode(code=code, language=lang, stdin=stdin)
+                
+                msg = Message.code_execution(result=res)
+                
+                await broadcast(message=msg, room=room, target_user=user["id"])
+                
             print(data)
             
     except WebSocketDisconnect:
