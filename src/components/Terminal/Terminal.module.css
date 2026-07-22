@@ -1,5 +1,8 @@
 .terminal {
+    height: 100%;
+    width: 100%;
     background-color: black;
     font-family: monospace;
     color: white;
+    padding: 20px;
 }

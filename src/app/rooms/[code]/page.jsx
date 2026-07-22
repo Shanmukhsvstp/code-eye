@@ -25,6 +25,8 @@ export default function RoomPage() {
     const [codeExecutable, setCodeExecutable] = useState(false);
     const [executing, setExecuting] = useState(false);
 
+    const [output, setOutput] = useState("Your output is showed here.")
+
     // const [currUser, setCurrUser] = useState(user);
     const [choosenLang, setChoosenLang] = useState("python");
     const currUser = user;
@@ -81,7 +83,7 @@ export default function RoomPage() {
         if (!socketRef.current || socketRef.current.readyState !== 1) return;
 
         clearTimeout(executeTimeoutRef.current);
-
+        console.log(currCode);
         timeoutRef.current = setTimeout(() => {
             socketRef.current.send(
                 JSON.stringify({
@@ -180,6 +182,7 @@ export default function RoomPage() {
                 setExecuting(false);
                 window.stopLoader?.();
                 console.log(data);
+                setOutput(data);
             }
 
         };
@@ -189,6 +192,7 @@ export default function RoomPage() {
     }, [code, user]);
 
     const handleChange = (value) => {
+        setCurrCode(value);
         if (!socketRef.current || socketRef.current.readyState !== 1) return;
 
         clearTimeout(timeoutRef.current);
@@ -250,13 +254,19 @@ export default function RoomPage() {
                         </div>
                     </ResizablePanel>
 
-                    <ResizableHandle />
+                    {
+                        codeExecutable && <ResizableHandle />
+                    }
+                            
 
-                    <ResizablePanel defaultSize={100}>
-                        <div className={styles.terminalContainer}>
-                            <Terminal data={"TEST OUTPUT"} />
-                        </div>
-                    </ResizablePanel>
+                    {codeExecutable && (
+
+                            <ResizablePanel defaultSize={100}>
+                                <div className={styles.terminalContainer}>
+                                    <Terminal data={output} />
+                                </div>
+                            </ResizablePanel>
+                    )}
                 </ResizablePanelGroup>
             )}
 
