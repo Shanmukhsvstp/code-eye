@@ -27,6 +27,8 @@ export default function RoomPage() {
 
     const [output, setOutput] = useState("Your output is showed here.")
 
+    const [inputs, setInputs] = useState([]);
+
     // const [currUser, setCurrUser] = useState(user);
     const [choosenLang, setChoosenLang] = useState("python");
     const currUser = user;
@@ -253,19 +255,22 @@ export default function RoomPage() {
 
                         </div>
                     </ResizablePanel>
-
+{/* 
                     {
-                        codeExecutable && <ResizableHandle />
-                    }
+                        codeExecutable && 
+                    } */}
                             
 
                     {codeExecutable && (
-
+                        <>
+                            <ResizableHandle withHandle className={styles.divider}/>
                             <ResizablePanel defaultSize={100}>
                                 <div className={styles.terminalContainer}>
-                                    <Terminal data={output} />
+                                    <Terminal OutputData={output} onInputsChange={(inps)=>{setInputs(inps)}}/>
                                 </div>
                             </ResizablePanel>
+                            
+                        </>
                     )}
                 </ResizablePanelGroup>
             )}

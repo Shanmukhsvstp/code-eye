@@ -1,12 +1,8 @@
-.terminal {
+.outputTerminal {
     height: 100%;
     width: 100%;
     background-color: black;
     font-family: monospace;
     color: white;
-    /* margin: 20px; */
-}
-
-.divider {
-  background-color: var(--foreground);
+    padding: 20px;
 }

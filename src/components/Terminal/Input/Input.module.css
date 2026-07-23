@@ -1,0 +1,26 @@
+.inputTerminal {
+    height: 100%;
+    width: 100%;
+    background-color: black;
+    color: white;
+    /* padding: 20px; */
+}
+
+.inputTerminal .labelDiv {
+    display: flex;
+    align-items: center;      /* Vertical centering */
+    justify-content: space-between;
+    height: 4vh;
+    padding: 0 15px;
+    background-color: var(--foreground-hover);
+}
+
+.inputTerminal .labelDiv .addInput {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
