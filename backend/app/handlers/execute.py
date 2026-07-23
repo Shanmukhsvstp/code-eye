@@ -28,6 +28,7 @@ async def executeCode(code: str, language: str, stdin: str = ""):
             }
         
         result = response.json()
+        print(result)
         
         return {
             "error": False,

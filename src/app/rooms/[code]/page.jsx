@@ -209,7 +209,7 @@ export default function RoomPage() {
 
     if (!role) {
 
-        window.startLoader?.();
+        // window.startLoader?.();
         return <div>Loading</div>
 
     }
