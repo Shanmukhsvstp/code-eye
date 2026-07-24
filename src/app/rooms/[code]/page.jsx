@@ -14,6 +14,7 @@ import {
     ResizablePanel,
     ResizablePanelGroup,
 } from "@/components/ui/resizable"
+import { FaUserGroup } from "react-icons/fa6";
 
 
 export default function RoomPage() {
@@ -91,6 +92,7 @@ export default function RoomPage() {
                 JSON.stringify({
                     type: "code_execution",
                     code: currCode || "",
+                    inputs: inputs,
                     default_lang: choosenLang
                 })
             );
@@ -102,12 +104,30 @@ export default function RoomPage() {
     };
 
     const copyLink = async () => {
-        try {
-            await navigator.clipboard.writeText(link);
-            alert("Copied the link")
-        }
-        catch (e) {
-            console.log(e);
+
+        if (!navigator.share) {
+
+            try {
+                await navigator.clipboard.writeText(link);
+                alert("Copied the link")
+            }
+            catch (e) {
+                console.log(e);
+            }
+        } else {
+
+            try {
+                await navigator.share({
+                    title: "Join CodeEye Room",
+                    text: "Join CodeEye Room",
+                    url: link,
+                });
+
+                console.log("Shared successfully");
+            } catch (error) {
+                console.log("Share cancelled", error);
+            }
+
         }
     }
 
@@ -255,21 +275,21 @@ export default function RoomPage() {
 
                         </div>
                     </ResizablePanel>
-{/* 
+                    {/* 
                     {
                         codeExecutable && 
                     } */}
-                            
+
 
                     {codeExecutable && (
                         <>
-                            <ResizableHandle withHandle className={styles.divider}/>
+                            <ResizableHandle withHandle className={styles.divider} />
                             <ResizablePanel defaultSize={100}>
                                 <div className={styles.terminalContainer}>
-                                    <Terminal OutputData={output} onInputsChange={(inps)=>{setInputs(inps)}}/>
+                                    <Terminal OutputData={output} onInputsChange={(inps) => { setInputs(inps) }} />
                                 </div>
                             </ResizablePanel>
-                            
+
                         </>
                     )}
                 </ResizablePanelGroup>
@@ -291,18 +311,16 @@ export default function RoomPage() {
                             </svg>
                         </md-filled-button>
                     </center>
-                    {
+                    {clients.length === 0 ? (
+                        <div className={styles.emptyClientsState}>
+                            <div className={styles.emptyIcon}><FaUserGroup /></div>
+                            <h3>No participants joined yet</h3>
+                            <p>Share the link above to let participants enter the room.</p>
+                        </div>
+                    ) : (
                         [...clients].sort((a, b) => b.stress_score - a.stress_score).map((client) => (
                             <div key={client.id} className={styles.previewDiv}>
                                 <p>{client.name} (ID: {client.id})</p>
-                                {/* <pre className={styles.codePreviewer}>
-                                    {client.code.split("\n").map((line, index) => (
-                                        <span key={index} className={styles.line}>
-                                            {line}
-                                            {"\n"}
-                                        </span>
-                                    ))}
-                                </pre> */}
                                 <Editor
                                     className={styles.codePreviewer}
                                     height="40vh"
@@ -312,10 +330,12 @@ export default function RoomPage() {
                                         readOnly: true,
                                         automaticLayout: true,
                                     }}
-                                    value={client.code} />
+                                    value={client.code}
+                                />
                             </div>
                         ))
-                    }
+                    )}
+
                 </div>
             )}
         </div>

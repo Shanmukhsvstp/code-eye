@@ -1,0 +1,118 @@
+/* ==========================================================================
+   LAYOUT STRUCTURE
+   ========================================================================== */
+
+/* Main workspace area */
+.mainContainer {
+    flex: 1;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    /* Removed the transition here since it no longer needs to resize */
+}
+
+/* ==========================================================================
+   ZOOM-STYLE BOTTOM TOOLBAR (Fixed Overlay)
+   ========================================================================== */
+
+/* Base Toolbar Container */
+.bottomToolBar {
+    position: fixed; /* Floats on top of the main container */
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 72px;
+    background-color: #141414;
+    border-top: 1px solid #282828;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    z-index: 50;
+    box-sizing: border-box;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+    
+    /* Smooth sliding transitions */
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dismissed / Hidden State: slides down off-screen */
+.hidden {
+    transform: translateY(100%);
+    opacity: 0;
+    /* Removed the negative margin. Since it's fixed, translateY is all we need */
+    pointer-events: none; 
+}
+
+/* Invisible 24px hover detection zone pinned to the bottom of the viewport */
+.hoverZone {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 30px; /* Slightly taller to make it easier to trigger */
+    z-index: 49;
+    background: transparent;
+}
+
+
+/* ==========================================================================
+   TOOLBAR INNER CONTENT LAYOUT
+   ========================================================================== */
+
+.toolbarSection {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.toolbarSection.center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.actionBtn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background: transparent;
+    border: none;
+    color: #e0e0e0;
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.actionBtn:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+}
+
+.actionBtn svg {
+    font-size: 1.25rem;
+}
+
+.leaveBtn {
+    background-color: #eb5757;
+    color: #ffffff;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.leaveBtn:hover {
+    background-color: #d64545;
+}

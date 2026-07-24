@@ -18,26 +18,29 @@ export default function Home() {
     const supportedLang = languages.lang;
 
     const createRoom = async () => {
+        window.startLoader?.();
         if (roomCode !== "") {
             router.push(`/rooms/${roomCode}`)
         }
-        window.startLoader?.();
-        try {
-            const response = await axios.get(
-                creation_endpoint,
-                {
-                    headers: {
-                        "Authorization": `Bearer ${token}`
-                    },
-                    params: {
-                        "lang": selectedLang
+        else {
+
+            try {
+                const response = await axios.get(
+                    creation_endpoint,
+                    {
+                        headers: {
+                            "Authorization": `Bearer ${token}`
+                        },
+                        params: {
+                            "lang": selectedLang
+                        }
                     }
-                }
-            );
-            router.push(`/rooms/${response.data?.code}`)
-        }
-        catch (error) {
-            console.log(error);
+                );
+                router.push(`/rooms/${response.data?.code}`)
+            }
+            catch (error) {
+                console.log(error);
+            }
         }
     }
 
