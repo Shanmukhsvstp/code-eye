@@ -20,16 +20,18 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
     return (
-        <html
-            lang="en"
+        <div
             className={`${inter.variable} ${interTight.variable} h-full antialiased`}
         >
-            <body className="h-screen w-screen flex flex-col overflow-hidden bg-black text-white m-0 p-0">
+            <div
+                className="min-h-screen w-full flex flex-col overflow-x-hidden text-white m-0 p-0"
+                style={{ backgroundColor: "var(--background)" }}
+            >
                 <main className={styles.mainContainer}>
                     {children}
                 </main>
                 <BottomToolBar className={styles.bottomToolBar} />
-            </body>
-        </html>
+            </div>
+        </div>
     );
 }

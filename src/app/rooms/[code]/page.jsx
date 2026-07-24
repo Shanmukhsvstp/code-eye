@@ -237,7 +237,7 @@ export default function RoomPage() {
     }
 
     return (
-        <div style={{ height: "100vh" }}>
+        <div style={{ height: "100%", minHeight: 0, width: "100%" }}>
             {role === "client" && (
                 <ResizablePanelGroup orientation="vertical" className={styles.editorContainer}>
 

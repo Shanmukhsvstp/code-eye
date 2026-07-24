@@ -1,31 +1,21 @@
-/* ==========================================================================
-   LAYOUT STRUCTURE
-   ========================================================================== */
-
-/* Main workspace area */
 .mainContainer {
     flex: 1;
     width: 100%;
-    height: 100vh;
+    min-height: 0;
     display: flex;
     flex-direction: column;
     overflow: hidden;
     position: relative;
-    /* Removed the transition here since it no longer needs to resize */
+    background: var(--background);
 }
 
-/* ==========================================================================
-   ZOOM-STYLE BOTTOM TOOLBAR (Fixed Overlay)
-   ========================================================================== */
-
-/* Base Toolbar Container */
 .bottomToolBar {
-    position: fixed; /* Floats on top of the main container */
+    position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
     height: 72px;
-    background-color: #141414;
+    background-color: var(--foreground);
     border-top: 1px solid #282828;
     display: flex;
     align-items: center;
@@ -34,35 +24,25 @@
     z-index: 50;
     box-sizing: border-box;
     box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
-    
-    /* Smooth sliding transitions */
     transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
                 opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Dismissed / Hidden State: slides down off-screen */
 .hidden {
     transform: translateY(100%);
     opacity: 0;
-    /* Removed the negative margin. Since it's fixed, translateY is all we need */
     pointer-events: none; 
 }
 
-/* Invisible 24px hover detection zone pinned to the bottom of the viewport */
 .hoverZone {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 30px; /* Slightly taller to make it easier to trigger */
+    height: 30px;
     z-index: 49;
     background: transparent;
 }
-
-
-/* ==========================================================================
-   TOOLBAR INNER CONTENT LAYOUT
-   ========================================================================== */
 
 .toolbarSection {
     display: flex;

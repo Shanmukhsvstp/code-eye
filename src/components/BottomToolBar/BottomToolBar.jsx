@@ -1,10 +1,15 @@
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
-import styles from '@/app/rooms//rooms_layout.module.css'; // or your toolbar CSS module
+import styles from '@/app/rooms/rooms_layout.module.css'; // or your toolbar CSS module
+import { FaUserGroup } from 'react-icons/fa6';
 
-export default function BottomToolBar({ className }) {
+export default function BottomToolBar({ className, isCurrUserAdmin }) {
+
     const [isVisible, setIsVisible] = useState(true);
+    const [isAdmin, setIsAdmin] = useState(false);
+
     const timerRef = useRef(null);
+
 
     // Helper to start or restart the 5-second countdown
     const startTimer = () => {
@@ -31,9 +36,14 @@ export default function BottomToolBar({ className }) {
         startTimer();
     };
 
-    return (
+    useEffect(()=>{
+        setIsAdmin(isCurrUserAdmin);
+    },[isCurrUserAdmin]);
+
+    if (isAdmin)
+return (
         <>
-            {/* Invisible 20px zone at bottom of screen to trigger hover when hidden */}
+            {/* Invisible hover zone at bottom of screen */}
             <div 
                 className={styles.hoverZone} 
                 onMouseEnter={handleMouseEnter} 
@@ -43,10 +53,26 @@ export default function BottomToolBar({ className }) {
                 className={`${className} ${!isVisible ? styles.hidden : ''}`}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
-                onMouseMove={handleMouseEnter} /* Keeps toolbar alive while moving mouse inside */
+                onMouseMove={handleMouseEnter}
             >
-                {/* Toolbar content (Mic, Camera, Share buttons, etc.) */}
-                <div>Toolbar Content</div>
+                {/*LEFT*/}
+                <div className={styles.toolbarSection}>
+                </div>
+
+                {/*CENTER*/}
+                <div className={`${styles.toolbarSection} ${styles.center}`}>
+                    <button className={styles.actionBtn}>
+                        <FaUserGroup size={22} />
+                        <span>Participants</span>
+                    </button>
+                </div>
+
+                {/*RIGHT*/}
+                <div className={styles.toolbarSection}>
+                    <button className={styles.leaveBtn}>
+                        End Session
+                    </button>
+                </div>
             </div>
         </>
     );
