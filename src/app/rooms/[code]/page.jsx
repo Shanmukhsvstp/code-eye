@@ -18,6 +18,7 @@ import { FaUserGroup } from "react-icons/fa6";
 
 
 export default function RoomPage() {
+
     const { code } = useParams();
     const { user } = useAuth();
 
@@ -51,6 +52,7 @@ export default function RoomPage() {
         if (!role) {
             window.startLoader?.();
         } else {
+            console.log("ROLE:", role);
             window.stopLoader?.();
         }
         updateLink();
@@ -146,10 +148,12 @@ export default function RoomPage() {
             console.log(data)
             if (data.type === "room_state") {
                 // console.log(data.default_lang);
+                // setChoosenLang(data.default_lang);
+                // if (executable_languages.includes(choosenLang)) {
+                //     setCodeExecutable(true);
+                // }
                 setChoosenLang(data.default_lang);
-                if (executable_languages.includes(choosenLang)) {
-                    setCodeExecutable(true);
-                }
+                setCodeExecutable(executable_languages.includes(data.default_lang));
                 const clientsData = data.users
                     .filter(user => Number(user.user_id) !== Number(currUser?.id))
                     .map(
@@ -237,11 +241,10 @@ export default function RoomPage() {
     }
 
     return (
-        <div style={{ height: "100%", minHeight: 0, width: "100%" }}>
+        <div style={{ flex: "1 1 auto", minHeight: 0, width: "100%", display: "flex", flexDirection: "column" }}>
             {role === "client" && (
-                <ResizablePanelGroup orientation="vertical" className={styles.editorContainer}>
-
-                    <ResizablePanel defaultSize={75} minSize={35}>
+                <ResizablePanelGroup orientation="vertical" className={styles.editorContainer} style={{ flex: "1 1 auto", minHeight: 0 }}>
+                    <ResizablePanel defaultSize="75%" minSize="35%">
                         <div className={styles.editorWrapper}>
 
                             <div className={styles.toolbar}>
@@ -275,16 +278,12 @@ export default function RoomPage() {
 
                         </div>
                     </ResizablePanel>
-                    {/* 
-                    {
-                        codeExecutable && 
-                    } */}
 
 
                     {codeExecutable && (
                         <>
                             <ResizableHandle withHandle className={styles.divider} />
-                            <ResizablePanel defaultSize={100}>
+                            <ResizablePanel defaultSize="25%" minSize="15%">
                                 <div className={styles.terminalContainer}>
                                     <Terminal OutputData={output} onInputsChange={(inps) => { setInputs(inps) }} />
                                 </div>

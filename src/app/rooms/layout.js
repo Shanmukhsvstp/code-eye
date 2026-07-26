@@ -20,18 +20,18 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
     return (
-        <div
-            className={`${inter.variable} ${interTight.variable} h-full antialiased`}
-        >
+        // <div
+        //     className={`${inter.variable} ${interTight.variable} h-full antialiased`}
+        // >
             <div
-                className="min-h-screen w-full flex flex-col overflow-x-hidden text-white m-0 p-0"
+                className="flex-1 min-h-0 w-full flex flex-col overflow-x-hidden text-white m-0 p-0"
                 style={{ backgroundColor: "var(--background)" }}
             >
                 <main className={styles.mainContainer}>
                     {children}
                 </main>
-                <BottomToolBar className={styles.bottomToolBar} />
+                <BottomToolBar className={styles.bottomToolBar} isCurrUserAdmin={true} />
             </div>
-        </div>
+        // </div>
     );
 }

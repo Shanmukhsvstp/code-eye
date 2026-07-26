@@ -36,44 +36,44 @@ export default function BottomToolBar({ className, isCurrUserAdmin }) {
         startTimer();
     };
 
-    useEffect(()=>{
+    useEffect(() => {
         setIsAdmin(isCurrUserAdmin);
-    },[isCurrUserAdmin]);
+    }, [isCurrUserAdmin]);
 
     if (isAdmin)
-return (
-        <>
-            {/* Invisible hover zone at bottom of screen */}
-            <div 
-                className={styles.hoverZone} 
-                onMouseEnter={handleMouseEnter} 
-            />
+        return (
+            <>
+                {/* Invisible hover zone at bottom of screen */}
+                <div
+                    className={styles.hoverZone}
+                    onMouseEnter={handleMouseEnter}
+                />
 
-            <div 
-                className={`${className} ${!isVisible ? styles.hidden : ''}`}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-                onMouseMove={handleMouseEnter}
-            >
-                {/*LEFT*/}
-                <div className={styles.toolbarSection}>
-                </div>
+                <div
+                    className={`${className} ${!isVisible ? styles.hidden : ''}`}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                    onMouseMove={handleMouseEnter}
+                >
+                    {/*LEFT*/}
+                    <div className={styles.toolbarSection}>
+                    </div>
 
-                {/*CENTER*/}
-                <div className={`${styles.toolbarSection} ${styles.center}`}>
-                    <button className={styles.actionBtn}>
-                        <FaUserGroup size={22} />
-                        <span>Participants</span>
-                    </button>
-                </div>
+                    {/*CENTER*/}
+                    <div className={`${styles.toolbarSection} ${styles.center}`}>
+                        <button className={styles.actionBtn}>
+                            <FaUserGroup size={22} />
+                            <span>Participants</span>
+                        </button>
+                    </div>
 
-                {/*RIGHT*/}
-                <div className={styles.toolbarSection}>
-                    <button className={styles.leaveBtn}>
-                        End Session
-                    </button>
+                    {/*RIGHT*/}
+                    <div className={styles.toolbarSection}>
+                        <button className={styles.leaveBtn}>
+                            End Session
+                        </button>
+                    </div>
                 </div>
-            </div>
-        </>
-    );
+            </>
+        );
 }
