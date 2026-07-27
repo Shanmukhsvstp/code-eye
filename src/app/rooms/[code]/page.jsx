@@ -15,12 +15,14 @@ import {
     ResizablePanelGroup,
 } from "@/components/ui/resizable"
 import { FaUserGroup } from "react-icons/fa6";
+import { useRoomContext } from "@/context/RoomContext";
 
 
 export default function RoomPage() {
 
     const { code } = useParams();
     const { user } = useAuth();
+    const { setIsAdmin, setClientsGlobally } = useRoomContext();
 
     const executable_languages = languages.executable_languages;
 
@@ -64,6 +66,7 @@ export default function RoomPage() {
     };
     const addClient = (newClient) => {
         setClients((prev) => [...prev, newClient]);
+        setClientsGlobally((prev) => [...prev, newClient]);
     };
 
     const updateClient = (id, updater) => {
@@ -171,6 +174,7 @@ export default function RoomPage() {
                 console.log(user?.id);
                 if (data?.user_id == user?.id) {
                     setRole(data.role);
+                    // setIsAdmin(data.role === "admin");
                 }
                 if (data?.role == "client" && Number(data.user_id) !== Number(user?.id)) {
                     addClient({
@@ -216,6 +220,10 @@ export default function RoomPage() {
         return () => ws.close();
 
     }, [code, user]);
+
+    useEffect(() => {
+        setIsAdmin(role === "admin");
+    }, [role]);
 
     const handleChange = (value) => {
         setCurrCode(value);

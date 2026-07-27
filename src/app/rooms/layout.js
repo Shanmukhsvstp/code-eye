@@ -2,6 +2,7 @@ import { Inter, Inter_Tight } from "next/font/google";
 import "@/app/globals.css";
 import BottomToolBar from "@/components/BottomToolBar/BottomToolBar";
 import styles from './rooms_layout.module.css'
+import { RoomProvider } from "@/context/RoomContext";
 
 const inter = Inter({
     variable: "--font-inter",
@@ -23,15 +24,17 @@ export default function RootLayout({ children }) {
         // <div
         //     className={`${inter.variable} ${interTight.variable} h-full antialiased`}
         // >
-            <div
-                className="flex-1 min-h-0 w-full flex flex-col overflow-x-hidden text-white m-0 p-0"
-                style={{ backgroundColor: "var(--background)" }}
-            >
+        <div
+            className="flex-1 min-h-0 w-full flex flex-col overflow-x-hidden text-white m-0 p-0"
+            style={{ backgroundColor: "var(--background)" }}
+        >
+            <RoomProvider>
                 <main className={styles.mainContainer}>
                     {children}
                 </main>
-                <BottomToolBar className={styles.bottomToolBar} isCurrUserAdmin={true} />
-            </div>
+                <BottomToolBar className={styles.bottomToolBar} />
+            </RoomProvider>
+        </div>
         // </div>
     );
 }

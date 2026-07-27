@@ -4,9 +4,6 @@ import styles from './Output.module.css'
 import { WrapText } from 'lucide-react';
 // (found: object with keys {type, error, stdout, stderr, compile_output, message, status, time, memory, exit_code})
 export default function Output({ data }) {
-    useEffect(() => {
-        // data.stdout = data.stdout.replace(/\n/g, "<br/>");
-    }, [data]);
     return (
         <div className={styles.outputTerminal}>
             {
@@ -14,7 +11,6 @@ export default function Output({ data }) {
                     <div>
                         {/* <pre>{data?.stdout}</pre> */}
                         <div>
-
                             <pre style={{
                                 whiteSpace: "pre-wrap",
                                 color: data.stderr ? "red" : "inherit"
@@ -30,8 +26,6 @@ export default function Output({ data }) {
                                 <br />
                                 <hr />
                             </pre>
-
-
                         </div>
                         <br />
                         <br />
@@ -41,7 +35,7 @@ export default function Output({ data }) {
                     :
                     (
                         <div>
-                            {/* {data} */} An error occured. Please check the code.
+                            Run your code to see the output here.           
                         </div>
                     )
             }

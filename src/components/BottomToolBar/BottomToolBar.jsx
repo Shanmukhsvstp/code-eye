@@ -2,11 +2,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styles from '@/app/rooms/rooms_layout.module.css'; // or your toolbar CSS module
 import { FaUserGroup } from 'react-icons/fa6';
+import { useRoomContext } from '@/context/RoomContext';
 
-export default function BottomToolBar({ className, isCurrUserAdmin }) {
+export default function BottomToolBar({ className }) {
 
     const [isVisible, setIsVisible] = useState(true);
-    const [isAdmin, setIsAdmin] = useState(false);
+    const { isAdmin } = useRoomContext();
 
     const timerRef = useRef(null);
 
@@ -35,10 +36,6 @@ export default function BottomToolBar({ className, isCurrUserAdmin }) {
     const handleMouseLeave = () => {
         startTimer();
     };
-
-    useEffect(() => {
-        setIsAdmin(isCurrUserAdmin);
-    }, [isCurrUserAdmin]);
 
     if (isAdmin)
         return (
