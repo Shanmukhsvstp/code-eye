@@ -85,6 +85,12 @@ async def websocket(
                 
                 await broadcast(message=msg, room=room, target_user=user["id"])
                 
+            elif message_type == "kick_user":
+                user_to_be_kicked = data.get("user_id")
+                if room.isAdmin(user["id"]):
+                    await room.kickUser(user_to_be_kicked)
+                    msg = Message.user_kicked(user_id=user_to_be_kicked)
+                    await broadcast(message=msg, room=room, target="all")
             print(data)
             
     except WebSocketDisconnect:

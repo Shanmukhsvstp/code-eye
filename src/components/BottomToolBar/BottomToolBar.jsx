@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import styles from '@/app/rooms/rooms_layout.module.css'; // or your toolbar CSS module
 import { FaUserGroup } from 'react-icons/fa6';
 import { useRoomContext } from '@/context/RoomContext';
+import { useRouter } from 'next/navigation';
 
 
 export default function BottomToolBar({ className }) {
@@ -10,7 +11,7 @@ export default function BottomToolBar({ className }) {
 
     const [isVisible, setIsVisible] = useState(true);
     const { isAdmin, setShowParticipantsWindow, showParticipantsWindow } = useRoomContext();
-
+    const router = useRouter();
     const timerRef = useRef(null);
 
 
@@ -68,8 +69,8 @@ export default function BottomToolBar({ className }) {
 
                     {/*RIGHT*/}
                     <div className={styles.toolbarSection}>
-                        <button className={styles.leaveBtn}>
-                            End Session
+                        <button className={styles.leaveBtn} onClick={()=>router.push("/")}>
+                            Leave Session
                         </button>
                     </div>
                 </div>

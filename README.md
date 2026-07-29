@@ -152,7 +152,17 @@ GOOGLE_CLIENT_SECRET="YOUR_GOOGLE_CLIENT_SECRET"
 GOOGLE_REDIRECT_URI="YOUR_GOOGLE_REDIRECT_URL"
 JWT_SECRET="YOUR_JWT_SECRET"
 FRONTEND_URL="https://codeeye.vercel.app"
+JUDGE_URL="YOUR_JUDGCE_URL"
 ```
+
+
+### Releases:
+#### Changelog 1.0.0:
+- Added code execution, with inputs
+- Added participants and kicking controls for admins
+- Intellisense intitialized through MonacoEditor
+
+
 
 ### Acknowledgements:
 - [ChatGPT](https://chat.openai.com/) was used in this project to assist with newer libraries, the whole codebase has been developed by human.

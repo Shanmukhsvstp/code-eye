@@ -13,6 +13,28 @@ class Room:
         self.clients = {}
         self.code = {}
         self.profile = {}
+        
+    def isAdmin(self, user_id):
+        if user_id in self.admins:
+            return True
+        return False
+    
+    async def kickUser(self, user_id):
+        ws = self.clients.pop(user_id, None)
+
+        self.code.pop(user_id, None)
+        self.profile.pop(user_id, None)
+        self.admins.discard(user_id)
+
+        if ws:
+            try:
+                await ws.close(code=4001, reason="Kicked by admin")
+            except Exception:
+                pass
+
+        # delete room if empty
+        if not self.clients:
+            rooms.pop(self.room_id, None)
 
 async def join_room(room_id, user_id, username, websocket, db):
     currRole = "client"

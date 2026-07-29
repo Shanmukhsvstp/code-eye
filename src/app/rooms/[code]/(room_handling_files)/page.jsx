@@ -22,6 +22,7 @@ export default function RoomPage() {
 
     const { code } = useParams();
     const { user } = useAuth();
+    const router = useRouter();
     const { setIsAdmin, setClientsGlobally, roomWebSocketRef } = useRoomContext();
 
     const executable_languages = languages.executable_languages;
@@ -50,10 +51,6 @@ export default function RoomPage() {
     const timeoutRef = useRef(null);
     const executeTimeoutRef = useRef(null);
 
-    
-    useEffect(()=>{
-        roomWebSocketRef.current = socketRef.current
-    },[socketRef]);
     
     useEffect(() => {
         if (!role) {
@@ -150,6 +147,7 @@ export default function RoomPage() {
         const ws = new WebSocket(final_ws_url);
 
         socketRef.current = ws;
+        roomWebSocketRef.current = ws;
 
         ws.onmessage = (event) => {
             const data = JSON.parse(event.data);
@@ -189,6 +187,11 @@ export default function RoomPage() {
                         name: data?.display_name,
                         stress_score: 0
                     });
+                }
+            }
+            if (data.type === "user_kicked") {
+                if (data?.user_id == user?.id) {
+                    router.push(`/rooms/kicked`)
                 }
             }
             if (data.type === "code_update") {

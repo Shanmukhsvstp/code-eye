@@ -20,6 +20,7 @@ export default function RootLayout({ children }) {
                     user_id: id || ""
                 })
             );
+        console.log(id)
     }
     return (
         <div style={{ flex: "1 1 auto", minHeight: 0, width: "100%", display: "flex", flexDirection: "column" }}>

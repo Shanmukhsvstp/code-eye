@@ -16,6 +16,13 @@ class Message:
             "type": "user_left",
             "user_id": user_id
         }
+    
+    @staticmethod
+    def user_kicked(user_id):
+        return {
+            "type": "user_kicked",
+            "user_id": user_id
+        }
 
     @staticmethod
     def code_update(user_id, code, stress_score=None):
