@@ -4,7 +4,9 @@ import styles from '@/app/rooms/rooms_layout.module.css'; // or your toolbar CSS
 import { FaUserGroup } from 'react-icons/fa6';
 import { useRoomContext } from '@/context/RoomContext';
 
+
 export default function BottomToolBar({ className }) {
+
 
     const [isVisible, setIsVisible] = useState(true);
     const { isAdmin } = useRoomContext();

@@ -1,0 +1,10 @@
+
+.divider {
+  background-color: var(--foreground);
+}
+.windows {
+    height: 100vh;
+}
+/* .mainWindow {
+    min-width: 70vw;
+} */

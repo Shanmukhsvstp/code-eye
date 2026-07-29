@@ -242,14 +242,13 @@ export default function RoomPage() {
     }
 
     if (!role) {
-
         // window.startLoader?.();
         return <div>Loading</div>
 
     }
 
     return (
-        <div style={{ flex: "1 1 auto", minHeight: 0, width: "100%", display: "flex", flexDirection: "column" }}>
+        <div style={{ flex: "1 1 auto", height: "100%", minHeight: 0, width: "100%", display: "flex", flexDirection: "column" }}>
             {role === "client" && (
                 <ResizablePanelGroup orientation="vertical" className={styles.editorContainer} style={{ flex: "1 1 auto", minHeight: 0 }}>
                     <ResizablePanel defaultSize="75%" minSize="35%">

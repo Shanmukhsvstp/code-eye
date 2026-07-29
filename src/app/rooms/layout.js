@@ -4,6 +4,7 @@ import BottomToolBar from "@/components/BottomToolBar/BottomToolBar";
 import styles from './rooms_layout.module.css'
 import { RoomProvider } from "@/context/RoomContext";
 
+
 const inter = Inter({
     variable: "--font-inter",
     subsets: ["latin"],

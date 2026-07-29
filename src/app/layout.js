@@ -4,6 +4,7 @@ import TopNav from "@/components/TopNav";
 import TopLoader from "@/components/TopLoader";
 import { AuthProvider } from "@/context/AuthContext";
 import { Suspense } from "react";
+import ParticipantsWidget from "@/components/BottomToolBar/Participants/Participants";
 
 const inter = Inter({
   variable: "--font-inter",
