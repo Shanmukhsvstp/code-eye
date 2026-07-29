@@ -5,7 +5,7 @@ import { useRoomContext } from '@/context/RoomContext';
 import { FaXmark, FaUserXmark } from 'react-icons/fa6';
 
 export default function Participants({ participants, onKick }) {
-  const { showParticipantsWindow, setShowParticipantsWindow } = useRoomContext();
+  const { showParticipantsWindow, setShowParticipantsWindow, roomWebSocketRef } = useRoomContext();
 
   const handleDismiss = () => {
     setShowParticipantsWindow(false);

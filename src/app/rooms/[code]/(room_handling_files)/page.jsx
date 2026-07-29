@@ -22,7 +22,7 @@ export default function RoomPage() {
 
     const { code } = useParams();
     const { user } = useAuth();
-    const { setIsAdmin, setClientsGlobally } = useRoomContext();
+    const { setIsAdmin, setClientsGlobally, roomWebSocketRef } = useRoomContext();
 
     const executable_languages = languages.executable_languages;
 
@@ -50,6 +50,11 @@ export default function RoomPage() {
     const timeoutRef = useRef(null);
     const executeTimeoutRef = useRef(null);
 
+    
+    useEffect(()=>{
+        roomWebSocketRef.current = socketRef.current
+    },[socketRef]);
+    
     useEffect(() => {
         if (!role) {
             window.startLoader?.();

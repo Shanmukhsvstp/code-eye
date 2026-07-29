@@ -11,7 +11,16 @@ import { useRoomContext } from "@/context/RoomContext";
 
 
 export default function RootLayout({ children }) {
-    const { isAdmin, showParticipantsWindow, participantsData } = useRoomContext();
+    const { isAdmin, showParticipantsWindow, participantsData, roomWebSocketRef } = useRoomContext();
+    const handleKick = (id) => {
+        if (!isAdmin) return;
+        roomWebSocketRef.current.send(
+                JSON.stringify({
+                    type: "kick_user",
+                    user_id: id || ""
+                })
+            );
+    }
     return (
         <div style={{ flex: "1 1 auto", minHeight: 0, width: "100%", display: "flex", flexDirection: "column" }}>
             <ResizablePanelGroup orientation="horizontal" style={{ flex: "1 1 auto", minHeight: 0 }}>
@@ -24,7 +33,7 @@ export default function RootLayout({ children }) {
                             <ResizableHandle withHandle className={styles.divider} />
                             <ResizablePanel>
                                 <div className={styles.windows}>
-                                    <Participants participants={participantsData}/>
+                                    <Participants participants={participantsData} onKick={handleKick}/>
                                 </div>
                             </ResizablePanel>
                         </>
