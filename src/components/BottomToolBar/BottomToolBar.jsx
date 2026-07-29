@@ -9,7 +9,7 @@ export default function BottomToolBar({ className }) {
 
 
     const [isVisible, setIsVisible] = useState(true);
-    const { isAdmin } = useRoomContext();
+    const { isAdmin, setShowParticipantsWindow, showParticipantsWindow } = useRoomContext();
 
     const timerRef = useRef(null);
 
@@ -60,7 +60,7 @@ export default function BottomToolBar({ className }) {
 
                     {/*CENTER*/}
                     <div className={`${styles.toolbarSection} ${styles.center}`}>
-                        <button className={styles.actionBtn}>
+                        <button className={styles.actionBtn} onClick={() => setShowParticipantsWindow(true)}>
                             <FaUserGroup size={22} />
                             <span>Participants</span>
                         </button>

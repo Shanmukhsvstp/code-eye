@@ -11,7 +11,7 @@ import { useRoomContext } from "@/context/RoomContext";
 
 
 export default function RootLayout({ children }) {
-    const { isAdmin } = useRoomContext();
+    const { isAdmin, showParticipantsWindow, participantsData } = useRoomContext();
     return (
         <div style={{ flex: "1 1 auto", minHeight: 0, width: "100%", display: "flex", flexDirection: "column" }}>
             <ResizablePanelGroup orientation="horizontal" style={{ flex: "1 1 auto", minHeight: 0 }}>
@@ -19,12 +19,12 @@ export default function RootLayout({ children }) {
                     {children}
                 </ResizablePanel>
                 {
-                    isAdmin && (
+                    (isAdmin && showParticipantsWindow) && (
                         <>
                             <ResizableHandle withHandle className={styles.divider} />
                             <ResizablePanel>
                                 <div className={styles.windows}>
-                                    <Participants />
+                                    <Participants participants={participantsData}/>
                                 </div>
                             </ResizablePanel>
                         </>

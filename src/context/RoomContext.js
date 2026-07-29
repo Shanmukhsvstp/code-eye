@@ -6,17 +6,18 @@ const RoomContext = createContext({
   isAdmin: false,
   setIsAdmin: () => {},
   showParticipantsWindow: false,
-  setShowParticipantsWindow: {}
+  setShowParticipantsWindow: {},
+  participantsData: []
 });
 
 export const RoomProvider = ({ children }) => {
 
   const [isAdmin, setIsAdmin] = useState(false);
-  const [clients, setClientsGlobally] = useState([]);
+  const [participantsData, setClientsGlobally] = useState([]);
   const [showParticipantsWindow, setShowParticipantsWindow] = useState(false);
 
   return (
-    <RoomContext.Provider value={{ isAdmin, setIsAdmin, setClientsGlobally, showParticipantsWindow, setShowParticipantsWindow }}>
+    <RoomContext.Provider value={{ isAdmin, setIsAdmin, setClientsGlobally, showParticipantsWindow, setShowParticipantsWindow, participantsData }}>
       {children}
     </RoomContext.Provider>
   );

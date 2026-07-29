@@ -66,8 +66,9 @@ export default function RoomPage() {
     };
     const addClient = (newClient) => {
         setClients((prev) => [...prev, newClient]);
-        setClientsGlobally((prev) => [...prev, newClient]);
     };
+
+    useEffect(()=>setClientsGlobally(clients),[clients]);
 
     const updateClient = (id, updater) => {
         setClients((prev) =>
@@ -325,7 +326,7 @@ export default function RoomPage() {
                         </div>
                     ) : (
                         [...clients].sort((a, b) => b.stress_score - a.stress_score).map((client) => (
-                            <div key={client.id} className={styles.previewDiv}>
+                            <div id={client.id} key={client.id} className={styles.previewDiv}>
                                 <p>{client.name} (ID: {client.id})</p>
                                 <Editor
                                     className={styles.codePreviewer}
