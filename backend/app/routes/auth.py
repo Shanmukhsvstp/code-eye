@@ -1,13 +1,31 @@
-from fastapi import APIRouter,Request,Depends
+from fastapi import APIRouter, Request, Depends, HTTPException
 from fastapi.responses import RedirectResponse
 from authlib.integrations.starlette_client import OAuth
 from dotenv import load_dotenv
 from sqlalchemy.ext.asyncio import AsyncSession
+from app.utils.password import password_hash, verifyPassword
 import os
 from app.handlers.user import createOrAuthenticateUser
 from app.utils.jwt import generateToken
 from app.db.database import get_db
+from app.handlers.user import createEmailUser, getUserByEmail
+from pydantic import BaseModel, EmailStr
+from pwdlib import PasswordHash
+
 load_dotenv()
+
+
+class EmailSignupRequest(BaseModel):
+    name: str
+    email: EmailStr
+    password: str
+
+
+class EmailLoginRequest(BaseModel):
+    email: EmailStr
+    password: str
+
+
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -45,6 +63,110 @@ async def authCallBack(request: Request, db: AsyncSession = Depends(get_db)):
         "token": token,
     }
     return RedirectResponse(f"{frontend_url}/auth/success?msg={message}") # Go to Home Page
+
+
+
+
+
+@router.post("/signup/email")
+async def signUpWithEmail(
+    data: EmailSignupRequest,
+    request: Request,
+    db: AsyncSession = Depends(get_db)
+):
+
+    success, message, user = await createEmailUser(
+        name=data.name,
+        email=data.email.lower().strip(),
+        password=data.password,
+        db=db
+    )
+
+    if not success:
+        raise HTTPException(
+            status_code=400,
+            detail=message
+        )
+
+    jwt_token = generateToken(
+        user_id=user.id
+    )
+
+    request.session["user"] = {
+        "token": jwt_token
+    }
+
+    return {
+        "success": True,
+        "message": message,
+        "user": {
+            "id": user.id,
+            "name": user.name,
+            "display_name": user.display_name,
+            "email": user.email
+        }
+    }
+
+
+
+
+@router.post("/login/email")
+async def loginWithEmail(
+    data: EmailLoginRequest,
+    request: Request,
+    db: AsyncSession = Depends(get_db)
+):
+
+    email = data.email.lower().strip()
+
+    user = await getUserByEmail(
+        email=email,
+        db=db
+    )
+
+    if user is None:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid email or password"
+        )
+
+    # User exists but doesn't have a password.
+    # For example, they registered with Google.
+    if user.password_hash is None:
+        raise HTTPException(
+            status_code=401,
+            detail="This account uses Google sign-in"
+        )
+
+    if not verifyPassword(
+        data.password,
+        user.password_hash
+    ):
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid email or password"
+        )
+
+    jwt_token = generateToken(
+        user_id=user.id
+    )
+
+    request.session["user"] = {
+        "token": jwt_token
+    }
+
+    return {
+        "success": True,
+        "message": "Login successful",
+        "user": {
+            "id": user.id,
+            "name": user.name,
+            "display_name": user.display_name,
+            "email": user.email
+        }
+    }
+
+
 
 
 @router.get("/logout")

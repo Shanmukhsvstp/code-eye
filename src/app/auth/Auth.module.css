@@ -1,6 +1,6 @@
 .main {
   display: flex;
-  justify-content: center; 
+  justify-content: center;
   align-items: center;
   min-height: 90vh;
   font-family: var(--font-inter);
@@ -8,32 +8,34 @@
 }
 
 .title {
-  padding-top: 5%; 
+  padding-top: 5%;
   font-family: var(--font-inter-tight);
   font-weight: 700;
-  font-size: clamp(1.5rem, 4vw, 2.5rem); 
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
   display: flex;
   justify-content: center;
-  text-align: center; 
+  text-align: center;
+  margin: 0;
 }
+
 .tagline {
   margin-top: 20px;
   display: flex;
   justify-content: center;
   text-align: center;
-  padding: 0 5%; 
-  font-size: clamp(0.8rem, 2vw, 1.2rem); 
+  padding: 0 5%;
+  font-size: clamp(0.8rem, 2vw, 1.2rem);
   line-height: 1.5;
 }
+
 .actionButton {
   display: flex;
-  justify-content: center; 
-  align-items: center;    
-  width: 100%;            
-  padding: 20px;           
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
   box-sizing: border-box;
 }
-
 
 .accent {
   color: var(--foreground);
@@ -52,28 +54,33 @@
   transition: opacity 0.1s ease;
 }
 
-
 .card {
-  width: 95%; 
-  max-width: 550px;      
-  
-  min-height: 450px;     
-  height: auto;           
+  width: 95%;
+  max-width: 550px;
+
+  min-height: 450px;
+  height: auto;
+
   display: flex;
   flex-direction: column;
-  justify-content:space-evenly;
-  padding: 40px 20px;     
+  justify-content: space-evenly;
+
+  padding: 40px 20px;
   box-sizing: border-box;
+
   background: rgba(255, 255, 255, 0.09);
   backdrop-filter: blur(29px);
   -webkit-backdrop-filter: blur(29px);
+
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 
+
+  box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.5),
     inset 0 -1px 0 rgba(255, 255, 255, 0.1),
     inset 0 0 2px 1px rgba(255, 255, 255, 0.1);
+
   position: relative;
   overflow: hidden;
 }
@@ -85,6 +92,7 @@
   left: 0;
   right: 0;
   height: 1px;
+
   background: linear-gradient(
     90deg,
     transparent,
@@ -100,10 +108,270 @@
   left: 0;
   width: 1px;
   height: 100%;
+
   background: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0.8),
     transparent,
     rgba(255, 255, 255, 0.3)
   );
+}
+
+
+/* Email authentication buttons */
+
+.emailActions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
+  margin-top: 20px;
+}
+
+.emailButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  min-height: 46px;
+  box-sizing: border-box;
+
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  color: #ffffff !important;
+  font-family: var(--font-inter);
+  font-size: 14px;
+  font-weight: 500;
+
+  text-decoration: none;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 4px 12px rgba(0, 0, 0, 0.05);
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.15s ease;
+}
+
+
+.emailButton:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.45);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.emailButton:active {
+  transform: scale(0.98);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Back link */
+
+.back {
+  display: inline-block;
+  color: #ffffff !important;
+  opacity: 0.7;
+  font-family: var(--font-inter);
+  font-size: 14px;
+  text-decoration: none;
+  margin-bottom: 10px;
+  transition: opacity 0.2s ease;
+}
+
+.back:hover {
+  opacity: 1;
+}
+
+/* Subtitle (used on login/signup instead of tagline) */
+
+.subtitle {
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  padding: 0 5%;
+  font-size: clamp(0.8rem, 2vw, 1rem);
+  color: #ffffff !important;
+  line-height: 1.5;
+  opacity: 0.75;
+}
+
+/* Form */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
+  margin-top: 20px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-family: var(--font-inter);
+  font-size: 13px;
+  font-weight: 500;
+  color: #ffffff !important;
+  opacity: 0.85;
+}
+
+.passwordRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.forgot {
+  font-family: var(--font-inter);
+  font-size: 12px;
+  color: #ffffff !important;
+  opacity: 0.6;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.forgot:hover {
+  opacity: 1;
+}
+
+.input {
+  width: 100%;
+  min-height: 46px;
+  box-sizing: border-box;
+  padding: 0 14px;
+
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  color: var(--foreground);
+  font-family: var(--font-inter);
+  font-size: 14px;
+
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.input::placeholder {
+  color: var(--foreground);
+  opacity: 0.4;
+}
+
+.input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 0 0 3px rgba(255, 255, 255, 0.08);
+}
+
+/* Submit button */
+
+.submit {
+  width: 100%;
+  min-height: 46px;
+  box-sizing: border-box;
+  margin-top: 6px;
+
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  color: var(--foreground);
+  font-family: var(--font-inter);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 4px 12px rgba(0, 0, 0, 0.08);
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.15s ease;
+}
+
+.submit:hover {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.submit:active {
+  transform: scale(0.98);
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* Divider between form and footer link */
+
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #ffffff !important;
+  opacity: 0.5;
+  font-family: var(--font-inter);
+  font-size: 13px;
+  margin: 20px 0;
+}
+
+/* Footer (login/signup switch) */
+
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+  color: #ffffff !important;
+  opacity: 0.75;
+  font-family: var(--font-inter);
+  font-size: 14px;
+}
+
+.link {
+  color: #ffffff !important;
+  font-weight: 600;
+  text-decoration: none;
+  opacity: 1;
+  transition: opacity 0.2s ease;
+}
+
+.link:hover {
+  opacity: 0.7;
 }

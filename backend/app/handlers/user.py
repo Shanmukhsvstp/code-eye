@@ -1,7 +1,9 @@
 from app.models.models import User, Room
 from app.utils.jwt import extractUserId
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.utils.password import hashPassword
 
 JUDGE0_LANGUAGE_IDS = {
     "c": 50,
@@ -127,3 +129,49 @@ async def createOrAuthenticateUser(user, db):
 
 def fetchLanguageCode(language):
     return JUDGE0_LANGUAGE_IDS[language]
+
+
+
+
+async def getUserByEmail(
+    email: str,
+    db: AsyncSession
+):
+    result = await db.execute(
+        select(User).where(User.email == email)
+    )
+
+    return result.scalar_one_or_none()
+
+
+async def createEmailUser(
+    name: str,
+    email: str,
+    password: str,
+    db: AsyncSession
+):
+    existing_user = await getUserByEmail(
+        email=email,
+        db=db
+    )
+
+    if existing_user:
+        return False, "An account with this email already exists", None
+
+    user = User(
+        display_name=name,
+        name=name,
+        email=email,
+        password_hash=hashPassword(password),
+        auth_provider="email",
+        sub=None
+    )
+
+    db.add(user)
+
+    await db.commit()
+    await db.refresh(user)
+
+    return True, "Account created successfully", user
+
+

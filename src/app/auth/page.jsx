@@ -10,9 +10,9 @@ export default function Auth() {
 
     const { token, user, loading, setLoading } = useAuth();
     const router = useRouter();
-    useEffect(()=>{
+    useEffect(() => {
         if (user !== null) router.push("/dashboard");
-    },[user]);
+    }, [user]);
     const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
     // const auth_endpoint = `${BACKEND_URL}/api/auth/`;
 
@@ -24,10 +24,10 @@ export default function Auth() {
     return (
         <div className={styles.main}>
             <div className={styles.card}>
-                
-                    <p className={styles.title}>Get Started</p>
-                    <p className={styles.tagline}>Start collaborating over <Link className={styles.accent} href={'/'}>CodeEye</Link> with a click.</p>
-                
+
+                <p className={styles.title}>Get Started</p>
+                <p className={styles.tagline}>Start collaborating over <Link className={styles.accent} href={'/'}>CodeEye</Link> with a click.</p>
+
                 <div className={styles.actionButton}>
                     <button onClick={authenticate} className="gsi-material-button">
                         <div className="gsi-material-button-state"></div>
@@ -46,6 +46,20 @@ export default function Auth() {
                         </div>
                     </button>
                 </div>
+                
+                <hr />
+                <center>or</center>
+
+                <div className={styles.emailActions}>
+                    <Link href="/auth/email/login" className={styles.emailButton}>
+                        Login with email
+                    </Link>
+
+                    <Link href="/auth/email/signup" className={styles.emailButton}>
+                        Signup with email
+                    </Link>
+                </div>
+
             </div>
         </div>
     )

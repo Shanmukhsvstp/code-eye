@@ -61,6 +61,31 @@ class Snowflake:
             )
 
 # USERS
+# class User(Base):
+#     __tablename__ = "users"
+
+#     _snowflake = Snowflake(machine_id=1)
+
+#     id = Column(
+#         BigInteger,
+#         primary_key=True,
+#         default=lambda: User._snowflake.generate()
+#     )
+
+#     display_name = Column(Text, nullable=False)
+#     email = Column(Text, unique=True, nullable=False)
+#     name = Column(Text, nullable=False)
+#     profile_picture = Column(Text, server_default=text("''"))
+
+#     sub = Column(Text, unique=True, nullable=False)
+
+#     created_at = Column(TIMESTAMP, server_default=func.now())
+
+#     # Relationships
+#     clients = relationship("Client", back_populates="user", cascade="all, delete")
+#     rooms = relationship("Room", back_populates="creator", cascade="all, delete")
+#     connections = relationship("Connection", back_populates="user", cascade="all, delete")
+
 class User(Base):
     __tablename__ = "users"
 
@@ -75,18 +100,43 @@ class User(Base):
     display_name = Column(Text, nullable=False)
     email = Column(Text, unique=True, nullable=False)
     name = Column(Text, nullable=False)
-    profile_picture = Column(Text, server_default=text("''"))
+    profile_picture = Column(Text, server_default=text(""))
 
-    sub = Column(Text, unique=True, nullable=False)
+    # Google OAuth user ID.
+    # NULL for email/password accounts.
+    sub = Column(Text, unique=True, nullable=True)
+
+    # Password hash for email/password accounts.
+    # NULL for Google-only accounts.
+    password_hash = Column(Text, nullable=True)
+
+    auth_provider = Column(
+        Text,
+        nullable=False,
+        server_default=text("'email'")
+    )
 
     created_at = Column(TIMESTAMP, server_default=func.now())
 
     # Relationships
-    clients = relationship("Client", back_populates="user", cascade="all, delete")
-    rooms = relationship("Room", back_populates="creator", cascade="all, delete")
-    connections = relationship("Connection", back_populates="user", cascade="all, delete")
+    clients = relationship(
+        "Client",
+        back_populates="user",
+        cascade="all, delete"
+    )
 
+    rooms = relationship(
+        "Room",
+        back_populates="creator",
+        cascade="all, delete"
+    )
 
+    connections = relationship(
+        "Connection",
+        back_populates="user",
+        cascade="all, delete"
+    )
+    
 
 # CLIENTS
 class Client(Base):
