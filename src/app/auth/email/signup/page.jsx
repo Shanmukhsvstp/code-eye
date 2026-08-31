@@ -2,30 +2,89 @@
 
 import Link from "next/link";
 import styles from "./../../Auth.module.css";
+import { useState } from "react";
 
 export default function Signup() {
-    const handleSubmit = (e) => {
+    const [loading, setLoading] = useState(false);
+
+    const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (loading) return;
 
         const formData = new FormData(e.currentTarget);
 
-        const name = formData.get("name");
-        const email = formData.get("email");
-        const password = formData.get("password");
-        const confirmPassword = formData.get("confirmPassword");
+        const name = formData.get("name")?.toString().trim();
+        const email = formData.get("email")?.toString().trim();
+        const password = formData.get("password")?.toString();
+        const confirmPassword = formData.get("confirmPassword")?.toString();
+
+        if (!name || !email || !password) {
+            alert("Please fill in all fields.");
+            return;
+        }
 
         if (password !== confirmPassword) {
             alert("Passwords do not match.");
             return;
         }
 
-        console.log({
-            name,
-            email,
-            password,
-        });
+        if (password.length < 8) {
+            alert("Password must be at least 8 characters.");
+            return;
+        }
 
-        // TODO: call your backend here
+        if (!BACKEND_URL) {
+            console.error("NEXT_PUBLIC_BACKEND_URL is not configured.");
+            alert("Backend URL is not configured.");
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            const response = await fetch(
+                `${BACKEND_URL}/api/auth/signup/email`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    credentials: "include",
+                    body: JSON.stringify({
+                        name,
+                        email,
+                        password,
+                    }),
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                const message =
+                    data?.detail ||
+                    data?.message ||
+                    "Failed to create account.";
+
+                alert(message);
+                return;
+            }
+
+            console.log("Signup successful:", data);
+
+            // The backend creates the session here.
+            // Send the user to your dashboard.
+            window.location.href = "/dashboard";
+
+        } catch (error) {
+            console.error("Signup error:", error);
+            alert("Unable to connect to the server. Please try again.");
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (

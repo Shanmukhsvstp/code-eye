@@ -49,7 +49,7 @@ export default function TopNav() {
             <img
                 width={30}
                 height={30}
-                src={user ? user.profile_picture : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+                src={user?.profile_picture ? user.profile_picture : "https://i1.sndcdn.com/avatars-000441107508-y53k4i-t1080x1080.jpg"}
                 alt='Profile' />
 
             {user ? (
