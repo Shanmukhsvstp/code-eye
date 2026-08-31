@@ -6,25 +6,78 @@ import { useState } from "react";
 
 export default function ForgotPassword() {
     const [submitted, setSubmitted] = useState(false);
+    const [loading, setLoading] = useState(false);
 
-    const handleSubmit = (e) => {
+    const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
+        if (loading) return;
+
         const formData = new FormData(e.currentTarget);
-        const email = formData.get("email");
+        const email = formData.get("email")?.toString().trim();
 
-        console.log({ email });
+        if (!email) {
+            alert("Please enter your email.");
+            return;
+        }
 
-        // TODO: call your backend here
+        if (!BACKEND_URL) {
+            console.error("NEXT_PUBLIC_BACKEND_URL is not configured.");
+            alert("Backend URL is not configured.");
+            return;
+        }
 
-        setSubmitted(true);
+        setLoading(true);
+
+        try {
+            const response = await fetch(
+                `${BACKEND_URL}/api/auth/forgot-password`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    credentials: "include",
+                    body: JSON.stringify({
+                        email,
+                    }),
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                const message =
+                    data?.detail ||
+                    data?.message ||
+                    "Unable to process your request.";
+
+                alert(message);
+                return;
+            }
+
+            setSubmitted(true);
+
+        } catch (error) {
+            console.error("Forgot password error:", error);
+            alert(
+                "Unable to connect to the server. Please try again."
+            );
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
         <main className={styles.main}>
             <div className={styles.card}>
 
-                <Link href="/auth/email/login" className={styles.back}>
+                <Link
+                    href="/auth/email/login"
+                    className={styles.back}
+                >
                     ← Back
                 </Link>
 
@@ -39,10 +92,16 @@ export default function ForgotPassword() {
                 </p>
 
                 {!submitted && (
-                    <form className={styles.form} onSubmit={handleSubmit}>
+                    <form
+                        className={styles.form}
+                        onSubmit={handleSubmit}
+                    >
 
                         <div className={styles.field}>
-                            <label className={styles.label} htmlFor="email">
+                            <label
+                                className={styles.label}
+                                htmlFor="email"
+                            >
                                 Email
                             </label>
 
@@ -54,14 +113,18 @@ export default function ForgotPassword() {
                                 autoComplete="email"
                                 required
                                 className={styles.input}
+                                disabled={loading}
                             />
                         </div>
 
                         <button
                             type="submit"
                             className={styles.submit}
+                            disabled={loading}
                         >
-                            Send reset link
+                            {loading
+                                ? "Sending..."
+                                : "Send reset link"}
                         </button>
 
                     </form>
