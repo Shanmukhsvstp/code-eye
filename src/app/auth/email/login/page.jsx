@@ -2,19 +2,78 @@
 
 import Link from "next/link";
 import styles from "./../../Auth.module.css";
+import { useState } from "react";
 
 export default function Login() {
-    const handleSubmit = (e) => {
+    const [loading, setLoading] = useState(false);
+
+    const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (loading) return;
 
         const formData = new FormData(e.currentTarget);
 
-        const email = formData.get("email");
-        const password = formData.get("password");
+        const email = formData.get("email")?.toString().trim();
+        const password = formData.get("password")?.toString();
 
-        console.log({ email, password });
+        if (!email || !password) {
+            alert("Please enter your email and password.");
+            return;
+        }
 
-        // TODO: call your backend here
+        if (!BACKEND_URL) {
+            console.error("NEXT_PUBLIC_BACKEND_URL is not configured.");
+            alert("Backend URL is not configured.");
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            const response = await fetch(
+                `${BACKEND_URL}/api/auth/login/email`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    credentials: "include",
+                    body: JSON.stringify({
+                        email,
+                        password,
+                    }),
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                const message =
+                    data?.detail ||
+                    data?.message ||
+                    "Login failed.";
+
+                alert(message);
+                return;
+            }
+
+            console.log("Login successful:", data);
+
+            // Session cookie has been created by the backend.
+            // Reload/navigate so AuthContext can detect the session.
+            window.location.href = "/dashboard";
+
+        } catch (error) {
+            console.error("Login error:", error);
+            alert(
+                "Unable to connect to the server. Please try again."
+            );
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -33,10 +92,16 @@ export default function Login() {
                     Login to continue collaborating on CodeEye.
                 </p>
 
-                <form className={styles.form} onSubmit={handleSubmit}>
+                <form
+                    className={styles.form}
+                    onSubmit={handleSubmit}
+                >
 
                     <div className={styles.field}>
-                        <label className={styles.label} htmlFor="email">
+                        <label
+                            className={styles.label}
+                            htmlFor="email"
+                        >
                             Email
                         </label>
 
@@ -48,6 +113,7 @@ export default function Login() {
                             autoComplete="email"
                             required
                             className={styles.input}
+                            disabled={loading}
                         />
                     </div>
 
@@ -76,14 +142,16 @@ export default function Login() {
                             autoComplete="current-password"
                             required
                             className={styles.input}
+                            disabled={loading}
                         />
                     </div>
 
                     <button
                         type="submit"
                         className={styles.submit}
+                        disabled={loading}
                     >
-                        Login
+                        {loading ? "Logging in..." : "Login"}
                     </button>
 
                 </form>
