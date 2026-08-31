@@ -1,9 +1,16 @@
-from app.models.models import User, Room
+from app.models.models import User, Room, PasswordResetToken
 from app.utils.jwt import extractUserId
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.utils.password import hashPassword
+from app.utils.password_reset import (
+    generateResetToken,
+    hashResetToken
+)
+
+from app.utils.email import sendPasswordResetEmail
+
 
 JUDGE0_LANGUAGE_IDS = {
     "c": 50,
@@ -175,3 +182,109 @@ async def createEmailUser(
     return True, "Account created successfully", user
 
 
+
+async def createPasswordReset(
+    email: str,
+    db: AsyncSession
+):
+    user = await getUserByEmail(
+        email=email,
+        db=db
+    )
+
+    # IMPORTANT:
+    # Don't reveal whether an email exists.
+    if user is None:
+        return True
+
+    # Google-only accounts don't have a password.
+    if user.password_hash is None:
+        return True
+
+    # Delete previous reset tokens for this user.
+    await db.execute(
+        delete(PasswordResetToken).where(
+            PasswordResetToken.user_id == user.id
+        )
+    )
+
+    raw_token = generateResetToken()
+    token_hash = hashResetToken(raw_token)
+
+    expires_at = (
+        datetime.now(timezone.utc)
+        + timedelta(minutes=30)
+    )
+
+    reset_token = PasswordResetToken(
+        user_id=user.id,
+        token_hash=token_hash,
+        expires_at=expires_at
+    )
+
+    db.add(reset_token)
+
+    await db.commit()
+
+    await sendPasswordResetEmail(
+        email=user.email,
+        token=raw_token
+    )
+
+    return True
+
+
+async def resetPassword(
+    token: str,
+    new_password: str,
+    db: AsyncSession
+):
+    token_hash = hashResetToken(token)
+
+    result = await db.execute(
+        select(PasswordResetToken).where(
+            PasswordResetToken.token_hash == token_hash
+        )
+    )
+
+    reset_token = result.scalar_one_or_none()
+
+    if reset_token is None:
+        return False, "Invalid or expired reset link"
+
+    now = datetime.now(timezone.utc)
+
+    if reset_token.expires_at <= now:
+        await db.delete(reset_token)
+        await db.commit()
+
+        return False, "Invalid or expired reset link"
+
+    result = await db.execute(
+        select(User).where(
+            User.id == reset_token.user_id
+        )
+    )
+
+    user = result.scalar_one_or_none()
+
+    if user is None:
+        await db.delete(reset_token)
+        await db.commit()
+
+        return False, "Invalid or expired reset link"
+
+    user.password_hash = hashPassword(
+        new_password
+    )
+
+    # This also converts the account into
+    # email/password authentication if necessary.
+    user.auth_provider = "email"
+
+    # Token can only be used once.
+    await db.delete(reset_token)
+
+    await db.commit()
+
+    return True, "Password reset successfully"

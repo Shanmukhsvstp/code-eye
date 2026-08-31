@@ -220,3 +220,36 @@ class Connection(Base):
     user = relationship("User", back_populates="connections")
     room = relationship("Room", back_populates="connections")
     client = relationship("Client", back_populates="connections")
+    
+class PasswordResetToken(Base):
+    __tablename__ = "password_reset_tokens"
+
+    id = Column(
+        BigInteger,
+        primary_key=True,
+        autoincrement=True
+    )
+
+    user_id = Column(
+        BigInteger,
+        ForeignKey("users.id", ondelete="CASCADE"),
+        nullable=False
+    )
+
+    token_hash = Column(
+        Text,
+        unique=True,
+        nullable=False
+    )
+
+    expires_at = Column(
+        TIMESTAMP,
+        nullable=False
+    )
+
+    created_at = Column(
+        TIMESTAMP,
+        server_default=func.now()
+    )
+
+    user = relationship("User")

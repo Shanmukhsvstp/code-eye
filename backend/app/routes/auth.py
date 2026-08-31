@@ -5,7 +5,13 @@ from dotenv import load_dotenv
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.utils.password import password_hash, verifyPassword
 import os
-from app.handlers.user import createOrAuthenticateUser
+from app.handlers.user import (
+    createOrAuthenticateUser,
+    createEmailUser,
+    getUserByEmail,
+    createPasswordReset,
+    resetPassword
+)
 from app.utils.jwt import generateToken
 from app.db.database import get_db
 from app.handlers.user import createEmailUser, getUserByEmail
@@ -24,6 +30,49 @@ class EmailSignupRequest(BaseModel):
 class EmailLoginRequest(BaseModel):
     email: EmailStr
     password: str
+    
+
+from pydantic import BaseModel, EmailStr, Field
+
+
+class EmailSignupRequest(BaseModel):
+    name: str = Field(
+        min_length=1,
+        max_length=100
+    )
+
+    email: EmailStr
+
+    password: str = Field(
+        min_length=8,
+        max_length=128
+    )
+
+
+class EmailLoginRequest(BaseModel):
+    email: EmailStr
+
+    password: str = Field(
+        min_length=1,
+        max_length=128
+    )
+
+
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
+
+
+class ResetPasswordRequest(BaseModel):
+    token: str = Field(
+        min_length=1
+    )
+
+    password: str = Field(
+        min_length=8,
+        max_length=128
+    )
+
+
 
 
 
@@ -173,3 +222,47 @@ async def loginWithEmail(
 async def logOut(request: Request):
     request.session.clear()
     return RedirectResponse(f"{frontend_url}/auth")
+
+@router.post("/forgot-password")
+async def forgotPassword(
+    data: ForgotPasswordRequest,
+    db: AsyncSession = Depends(get_db)
+):
+    email = data.email.lower().strip()
+
+    await createPasswordReset(
+        email=email,
+        db=db
+    )
+
+    # Always return the same response.
+    # Don't reveal whether the account exists.
+    return {
+        "success": True,
+        "message": (
+            "If an account exists with this email, "
+            "a password reset link has been sent."
+        )
+    }
+    
+@router.post("/reset-password")
+async def resetPasswordEndpoint(
+    data: ResetPasswordRequest,
+    db: AsyncSession = Depends(get_db)
+):
+    success, message = await resetPassword(
+        token=data.token,
+        new_password=data.password,
+        db=db
+    )
+
+    if not success:
+        raise HTTPException(
+            status_code=400,
+            detail=message
+        )
+
+    return {
+        "success": True,
+        "message": message
+    }
